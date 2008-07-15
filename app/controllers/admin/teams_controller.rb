@@ -29,6 +29,18 @@ class Admin::TeamsController < ApplicationController
     @team = Team.find(params[:id])
   end
   
+  # Inline
+  def edit_name
+    @team = Team.find(params[:id])
+    render(:partial => "edit_name")
+  end
+
+  # Cancel inline editing
+  def cancel_edit_name
+    @team = Team.find(params[:id])
+    render(:partial => 'name', :locals => { :team => @team })
+  end
+
   def toggle_member
     team = Team.find(params[:id])
     team.toggle!(:member)

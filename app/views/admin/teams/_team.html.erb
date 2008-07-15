@@ -1,5 +1,5 @@
 <div class="row <%= cycle("even", "odd") %> team clear" id="team_<%= team.id %>_row">
-  <div class="name" id="team_<%= team.id %>"><%= team.name %></div>
+  <div class="name editable" id="team_<%= team.id %>"><%= render(:partial => 'name', :locals => { :team => team }) %></div>
   <div class="aliases"><%= team.aliases.collect{ |a| a.name }.join(', ') %></div>
   <div class="member"><%= render :partial => 'member', :locals => { :team => team } %>
 </div>

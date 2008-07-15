@@ -906,17 +906,40 @@ div.buttons a.right {
 .team {
   background-image: url(/images/icons/people.gif);
   background-repeat: no-repeat;
-  background-position: 8px 2px;
+  background-position: 8px 4px;
 }
 
 .row div {
   display: inline-block;
   vertical-align: top;
-  padding-top: 2px;
-  padding-bottom: 2px;
+  padding-top: 4px;
+  padding-bottom: 4px;
   padding-left: 4px;
   padding-right: 4px;
   white-space: normal;
+}
+
+.row div.editable a {
+  color: black;
+  text-decoration: none;
+  border-style: none;
+  border-width: 0px;
+}
+
+.row div.editable a:hover {
+  color: black;
+  background-color: #FAFED8;
+  text-decoration: none;
+  border-bottom-style: none;
+}
+
+.row div.editable input {
+  font-size: 12px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  position: relative;
+  top: -3px;
+  left: -4px;
 }
 
 div.name {

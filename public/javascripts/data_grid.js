@@ -10,7 +10,7 @@ function clicked(e) {
   // defeat Safari bug
   if (targ.nodeType == 3) targ = targ.parentNode;
 
-  if (targ.localName == "A" || targ.localName == "a" || targ.localName == "INPUT" || targ.localName == "input") {
+  if (targ.localName != "DIV" && targ.localName != "div") {
     return true;
   }
 
