@@ -1,3 +1,35 @@
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, code,
+del, dfn, em, img, q, dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-weight: inherit;
+  font-style: inherit;
+  font-size: 100%;
+  font-family: inherit;
+  vertical-align: baseline;
+}
+
+body { 
+  line-height: 1.5; 
+}
+
+/* Tables still need 'cellspacing="0"' in the markup. */
+table { border-collapse: separate; border-spacing: 0; }
+caption, th, td { text-align: left; font-weight: normal; }
+table, td, th { vertical-align: middle; }
+
+/* Remove possible quote marks (") from <q>, <blockquote>. */
+blockquote:before, blockquote:after, q:before, q:after { content: ""; }
+blockquote, q { quotes: "" ""; }
+
+/* Remove annoying border on linked images. */
+a img { border: none; }
+
 body {
 	text-align: center;
 	min-width: 600px;
@@ -6,7 +38,7 @@ body {
 	font-family: Verdana, sans-serif;
 	text-align: left;
 	color: black;
-	overflow: auto;
+/*  overflow: auto;*/
 }
 
 div.frame {
@@ -15,14 +47,18 @@ div.frame {
 
 div.content {
 	text-align: center;
-	margin-top: 16px;
-	margin-bottom: 16px;
+	margin-top: 12px;
+	margin-bottom: 12px;
 	margin-left: auto;
 	margin-right: auto;
+	padding-left: 12px;
+	padding-right: 12px;
 }
 
 .shadow_1 {
 	border: 1px solid #E2E2E2;
+  position: relative;
+  margin: 8px;
 }
 
 .shadow_2 {
@@ -101,7 +137,7 @@ ul.links
 {
 	color: #999;
 	margin-top: 4px;
-	margin-bottom: 4px;
+	padding-bottom: 4px;
 }
 
 div.nav {
@@ -141,7 +177,6 @@ div.nav h1 a {
 }
 
 div.breadcrumb {
-	margin-top: 3px;
 	margin-left: 10px;
 }
 
@@ -182,6 +217,48 @@ td input
   padding-bottom: 0px;
   padding-left: 2px;
   margin-right: 8px;
+}
+
+button {
+  background-image: url(/images/buttons/shiny_background.gif);
+  background-position: left center;
+  background-color: rgb(251, 251, 251);
+  border-width: 1px; 
+  border-color: rgb(151, 151, 151); 
+  border-style: solid; 
+  font-weight: bold;
+  color: rgb(73, 73, 73);
+  font-size: 9pt;
+  vertical-align: center;
+  text-align: center;
+  margin-left: 8px;
+  margin-right: 0px;
+  padding-left: 8px;
+  padding-right: 8px;
+  height: 20px;
+  cursor: pointer;
+}
+
+button.new {
+  background-image: url(/images/buttons/plus.png);
+  width: 23px;
+  margin-left: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+button.delete {
+  background-image: url(/images/buttons/minus.png);
+  width: 23px;
+  border-left-style: none;
+  padding-left: 0px;
+  margin-left: 0px;
+}
+
+button.disabled {
+  opacity: 0.67;
+  -moz-opacity: 0.67;
+  filter:alpha(opacity=67);
 }
 
 table
@@ -348,6 +425,10 @@ div.inline {
   	float: left;
 }
 
+label {
+	font-weight: bold;
+}
+
 .field_label
 {
 	text-align: right !important;
@@ -418,37 +499,41 @@ tr.buttons td.right {
 	text-align: center;
 	width: 160px;
 }
-.message
+
+.messages
 {
-	width: 400px;
 	font-size: 8pt;
 	font-family: Verdana, Helvetica, sans-serif;
 	color: #666666;
 	white-space: normal;
-	text-align: left;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.message {
 	padding-left: 16px;
-	padding-right: 8px;
 	padding-top: 8px;
-	padding-bottom: 4px;
-  margin-top: 0px;
-  margin-bottom: 0px;
+  text-align: left;
+  background-repeat: no-repeat;
+  background-position: 0px 9px;
   margin-left: auto;
   margin-right: auto;
 }
 
+#info
+{
+  background-image: url(/images/icons/info.gif);
+}
+
 #notice
 {
-	background-image: url(/images/icons/confirmed.gif);
-	background-repeat: no-repeat;
-	background-position: 0px 9px;
+  background-image: url(/images/icons/confirmed.gif);
 }
 
 #warn
 {
 	color: red;
 	background-image: url(/images/icons/warn.gif);
-	background-repeat: no-repeat;
-	background-position: 0px 9px;
 }
 
 .inline_error
@@ -548,45 +633,47 @@ td#left_racer {
   background-color: #D0FA30;
 }
 
-table.base#racers {
+table.base#teams {
+  margin-top: 16px;
   margin-bottom: 0px;
+  position: relative;
 }
 
-table.base#racers th.name {
+table.base#teams th.name {
  width: 200px;
  padding-left: 40px;
 }
 
-table.base#racers td.name {
+table.base#teams td.name {
   width: 240px;
   white-space: nowrap;
 }
 
-table.base#racers td div.editable {
+table.base#teams td div.editable {
   white-space: nowrap;
 }
 
-table.base#racers td div.editable input {
+table.base#teams td div.editable input {
   position: relative;
   top: -4px;
   width: 150px;
 }
 
-table.base#racers td div.editable input.button {
+table.base#teams td div.editable input.button {
   top: 0px;
   width: auto;
 }
 
-table.base#racers th.team, table.base#racers td.team {
+table.base#teams th.team, table.base#teams td.team {
   width: 200px;
   margin: 0px;
 }
 
-table.base#racers th.aliases, table.base#racers td.aliases {
+table.base#teams th.aliases, table.base#teams td.aliases {
   width: 200px;
 }
 
-table.base#racers img.icon {
+table.base#teams img.icon {
   float: left;
   position: relative;
   top: -2px;
@@ -594,35 +681,35 @@ table.base#racers img.icon {
   padding-right: 8px;
 }
 
-table.base#racers td.icon a:hover {
+table.base#teams td.icon a:hover {
   border: none;
   text-decoration: none;
   background-color: transparent;
 }
 
-table.base#racers td.icon  {
+table.base#teams td.icon  {
   padding-right: 8px;
   padding-top: 3px;
   padding-bottom: 0px;
 }
 
-table.base#racers td.icon img {
+table.base#teams td.icon img {
   border: 0px;
 }
 
-table.base#racers td img.cancel {
+table.base#teams td img.cancel {
   width: 16px;
   height: 16px;
   margin-left: -6px;
 }
 
-table.base#racers td.name a.cancel {
+table.base#teams td.name a.cancel {
   border: none;
   text-decoration: none;
   background-color: transparent;
 }
 
-table.base#racers td.member {
+table.base#teams td.member {
   text-align: center;
   padding-top: 5px;
   padding-bottom: 0px;
@@ -643,3 +730,236 @@ form#export_form {
   padding-top: 12px;
   margin: 0px;
 }
+
+td.not_found {
+  padding: 16px;
+  text-align: center;
+}
+
+table.base#teams {
+  margin-bottom: 0px;
+  position: relative;
+}
+
+table.base#teams th.name {
+ width: 200px;
+ padding-left: 40px;
+}
+
+table.base#teams td.name {
+  width: 240px;
+  white-space: nowrap;
+}
+
+table.base#teams td div.editable {
+  white-space: nowrap;
+}
+
+table.base#teams td div.editable input {
+  position: relative;
+  top: -4px;
+  width: 150px;
+}
+
+table.base#teams td div.editable input.button {
+  top: 0px;
+  width: auto;
+}
+
+table.base#teams th.team, table.base#teams td.team {
+  width: 200px;
+  margin: 0px;
+}
+
+table.base#teams th.aliases, table.base#teams td.aliases {
+  width: 200px;
+}
+
+table.base#teams img.icon {
+  float: left;
+  position: relative;
+  top: -2px;
+  padding-left: 4px;
+  padding-right: 8px;
+}
+
+table.base#teams td.icon a:hover {
+  border: none;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+table.base#teams td.icon  {
+  padding-right: 8px;
+  padding-top: 3px;
+  padding-bottom: 0px;
+}
+
+table.base#teams td.icon img {
+  border: 0px;
+}
+
+table.base#teams td img.cancel {
+  width: 16px;
+  height: 16px;
+  margin-left: -6px;
+}
+
+table.base#teams td.name a.cancel {
+  border: none;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+table.base#teams td.member {
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 0px;
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
+table.base tr.error td {
+  color: rgb(250, 50, 50);
+  font-weight: bold;
+}
+
+table.base tr.error td img.icon {
+  padding-top: 1px;
+}
+
+table.base#teams th {
+  height: 30px;
+}
+
+table.base#teams td {
+  height: 30px;
+}
+
+.search {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.buttons {
+  text-align: left;
+  width: 100%;
+  margin-top: 8px;
+  padding: 0px;
+}
+
+.buttons a {
+  background: inherit;
+  border: none;
+  float: left;
+}
+
+.buttons img {
+  border: none;
+}
+
+div.buttons a.right {
+  float: right;
+}
+
+.spacer { clear: both; }
+
+.table_view {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #B3B3B3;  
+  margin: 0 auto;
+}
+
+.header_row {
+  text-align: left;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.header {
+  padding-top: 2px;
+  padding-bottom: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+  display: inline-block;
+  white-space: normal;
+}
+
+.rows {
+  overflow: auto;
+}
+
+.row {
+  text-align: left;
+  white-space: nowrap;
+}
+
+.odd {
+  background-color: #F4FDBF;
+}
+
+.selected {
+  background-color: #D0FA30;
+}
+
+.team {
+  background-image: url(/images/icons/people.gif);
+  background-repeat: no-repeat;
+  background-position: 8px 2px;
+}
+
+.row div {
+  display: inline-block;
+  vertical-align: top;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
+  white-space: normal;
+}
+
+div.name {
+  width: 320px;
+  padding-left: 32px;
+}
+
+.rows div.name {
+  cursor: move;  
+}
+
+.rows div.name a {
+  cursor: default;
+}
+
+div.aliases {
+  width: 400px;
+}
+
+div.member {
+  width: 48px;
+  text-align: center;
+}
+
+div.last { margin-right: 0; }
+
+/* Clearing floats without extra markup
+   Based on How To Clear Floats Without Structural Markup by PiE
+   [http://www.positioniseverything.net/easyclearing.html] */
+
+.clearfix:after, .container:after {
+    content: "."; 
+    display: block; 
+    height: 0; 
+    clear: both; 
+    visibility: hidden;
+}
+.clearfix, .container {display: inline-block;}
+* html .clearfix,
+* html .container {height: 1%;}
+.clearfix, .container {display: block;}
+
+/* Regular clearing
+   apply to column that should drop below previous ones. */
+
+.clear { clear:both; }

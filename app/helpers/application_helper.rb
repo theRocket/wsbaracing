@@ -4,7 +4,7 @@ module ApplicationHelper
   @@grid_columns = nil
     
   def focus(form_field_name)
-    @focus = form_field_name
+    javascript_tag("setFocus('#{form_field_name}')")
   end
   
   def aka(racer)

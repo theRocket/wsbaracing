@@ -36,6 +36,18 @@ class Team < ActiveRecord::Base
     team
   end
   
+  # Also search aliases
+  def Team.find_by_name_like(name, limit = 0)
+    name_like = "%#{name}%"
+    Team.find(
+      :all, 
+      :conditions => ['teams.name like ? or aliases.name like ?', name_like, name_like], 
+      :include => :aliases,
+      :limit => limit,
+      :order => 'teams.name'
+    )    
+  end
+  
   def no_duplicates
     existing_team = Team.find_by_name(name)
     if existing_team and ((existing_team.id == id and existing_team.name.casecmp(name) != 0) or (existing_team.id != id and name == existing_team.name))
