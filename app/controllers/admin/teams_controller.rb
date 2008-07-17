@@ -40,6 +40,76 @@ class Admin::TeamsController < ApplicationController
     @team = Team.find(params[:id])
     render(:partial => 'name', :locals => { :team => @team })
   end
+  
+  # Inline update. Merge with existing Team if names match
+  def update_name
+    new_name = params[:name]
+    team_id = params[:id]
+    @team = Team.find(team_id)
+    begin
+      original_name = @team.name
+      @team.name = new_name
+      existing_teams = Team.find_all_by_name(new_name) | Alias.find_all_teams_by_name(new_name)
+      existing_teams.reject! { |team| team == @team }
+      if existing_teams.size > 0
+        return merge?(original_name, existing_teams, @team)
+      end
+
+      if @team.save
+        expire_cache
+        render :update do |page| page.replace_html("team_#{@team.id}", :partial => 'name', :locals => { :team => @team }) end
+      else
+        render :update do |page|
+          page.replace_html("team_#{@team.id}", :partial => 'edit', :locals => { :team => @team })
+          @team.errors.full_messages.each do |message|
+            page.insert_html(:after, "team_#{@team.id}_row", :partial => 'error', :locals => { :error => message })
+          end
+        end
+      end
+    rescue Exception => e
+      ExceptionNotifier.deliver_exception_notification(e, self, request, {})
+      render :update do |page|
+        if @team
+          page.insert_html(:after, "team_#{@team.id}_row", :partial => 'error', :locals => { :error => e })
+        else
+          page.alert(e.message)
+        end
+      end
+    end
+  end
+
+  # Inline
+  def merge?(original_name, existing_teams, team)
+    @team = team
+    @existing_teams = existing_teams
+    @original_name = original_name
+    render :update do |page| 
+      page.replace_html("team_#{@team.id}", :partial => 'merge_confirm', :locals => { :team => @team })
+    end
+  end
+  
+  # Inline
+  # TODO Updated test for cancel
+  def merge
+    begin
+      if !params[:cancel].blank?
+        return render(:action => "cancel_edit_name")
+      else
+        team_to_merge_id = params[:id]
+        @team_to_merge = Team.find(team_to_merge_id)
+        @merged_team_name = @team_to_merge.name
+        @existing_team = Team.find(params[:target_id])
+        @existing_team.merge(@team_to_merge)
+        expire_cache
+      end
+    rescue Exception => e
+      render :update do |page|
+        page.visual_effect(:highlight, "team_#{@existing_team.id}_row", :startcolor => "#ff0000", :endcolor => "#FFDE14") if @existing_team
+        page.alert("Could not merge teams.\n#{e}")
+      end
+      ExceptionNotifier.deliver_exception_notification(e, self, request, {})
+    end
+  end
 
   def toggle_member
     team = Team.find(params[:id])

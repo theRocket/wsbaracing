@@ -944,7 +944,16 @@ div.buttons a.right {
 
 div.name {
   width: 320px;
+}
+
+.header_row div.name {
   padding-left: 32px;
+  width: 320px;
+}
+
+div.name span {
+  padding-left: 32px;
+  width: 320px;
 }
 
 .rows div.name {

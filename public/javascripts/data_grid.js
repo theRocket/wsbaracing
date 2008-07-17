@@ -82,7 +82,7 @@ function delete_team() {
   if (selectedId != null) {
     var name = $('team_' + selectedId).textContent;
     if (confirm('Really delete ' + name + "?")) { 
-      new Ajax.Request('http://localhost:3000/admin/teams/' + selectedId, {asynchronous:true, evalScripts:true, method:'delete'}); 
+      new Ajax.Request('/admin/teams/' + selectedId, {asynchronous:true, evalScripts:true, method:'delete'}); 
     } 
   }
   return false;
@@ -97,4 +97,9 @@ function redirectToEdit(id) {
   if (id == null) id = selectedId;
   if (id != null) window.location = "/admin/teams/" + id + "/edit";
   return false;  
+}
+
+function cancelEdit(id) {
+  new Ajax.Updater('team_' + id, '/admin/teams/cancel/' + id, {asynchronous:true, evalScripts:true});
+  return false;
 }

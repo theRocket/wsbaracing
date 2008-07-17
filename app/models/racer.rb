@@ -296,6 +296,11 @@ class Racer < ActiveRecord::Base
       discipline = Discipline[:road]
     end
     
+    raise "Racer#id cannot be nil" unless self.id
+    raise "association cannot be nil" unless association
+    raise "year cannot be nil" unless _year
+    raise "discipline cannot be nil" unless discipline
+    
     if value.blank?
       unless new_record?
         # Delete ALL numbers for ASSOCIATION and this discipline?
