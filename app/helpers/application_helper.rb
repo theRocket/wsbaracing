@@ -10,7 +10,7 @@ module ApplicationHelper
   def aka(racer)
     unless racer.aliases.empty?
       aliases = racer.aliases.collect {|a| a.name}
-      "(a.k.a. #{aliases.join(', ')})"
+      "(a.k.a. #{truncate(aliases.join(', '), 120)})"
     end
   end
   
