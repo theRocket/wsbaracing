@@ -1,0 +1,173 @@
+button {
+  background-image: url(/images/buttons/shiny_background.gif);
+  background-position: left center;
+  background-color: rgb(251, 251, 251);
+  border-width: 1px; 
+  border-color: rgb(151, 151, 151); 
+  border-style: solid; 
+  font-weight: bold;
+  color: rgb(73, 73, 73);
+  font-size: 9pt;
+  vertical-align: center;
+  text-align: center;
+  margin-left: 8px;
+  margin-right: 0px;
+  padding-left: 8px;
+  padding-right: 8px;
+  height: 20px;
+  cursor: pointer;
+}
+
+button.new {
+  background-image: url(/images/buttons/plus.png);
+  width: 23px;
+  margin-left: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+button.delete {
+  background-image: url(/images/buttons/minus.png);
+  width: 23px;
+  border-left-style: none;
+  padding-left: 0px;
+  margin-left: 0px;
+}
+
+button.disabled {
+  opacity: 0.67;
+  -moz-opacity: 0.67;
+  filter:alpha(opacity=67);
+  cursor: auto;
+}
+.buttons {
+  text-align: left;
+  width: 100%;
+  margin-top: 8px;
+  padding: 0px;
+}
+
+.buttons a {
+  background: inherit;
+  border: none;
+  float: left;
+}
+
+.buttons img {
+  border: none;
+}
+
+div.buttons a.right {
+  float: right;
+}
+
+.active_record_grid {
+	border-style: solid;
+	border-width: 1px;
+	border-color: #B3B3B3;  
+  margin: 0 auto;
+}
+
+.header_row {
+  text-align: left;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.header {
+  padding-top: 2px;
+  padding-bottom: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+  display: inline-block;
+  white-space: normal;
+}
+
+.rows {
+  overflow: auto;
+}
+
+.row {
+  text-align: left;
+  white-space: nowrap;
+  border: 2px solid white;
+}
+
+.odd {
+  background-color: #EEF2D6;
+  border: 2px solid #EEF2D6;
+}
+
+.selected {
+  background-color: #D0FA30;
+  border: 2px solid #D0FA30;
+}
+
+div.rows .record {
+  background-image: url(/images/icons/people.gif);
+  background-repeat: no-repeat;
+  background-position: 8px 4px;
+}
+
+.row div {
+  display: inline-block;
+  vertical-align: top;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
+  white-space: normal;
+}
+
+.row div.editable a {
+  color: black;
+  text-decoration: none;
+  border-style: none;
+  border-width: 0px;
+}
+
+.row div.editable a:hover {
+  color: black;
+/*  background-color: #FAFED8;*/
+  text-decoration: none;
+  border-bottom-style: none;
+}
+
+.row div.editable input {
+  font-size: 12px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  position: relative;
+  top: -3px;
+  left: -4px;
+}
+
+div.record {
+  width: 320px;
+}
+
+.header_row div.record {
+  padding-left: 36px;
+  width: 288px;
+}
+
+div.record div {
+  padding-left: 32px;
+}
+
+.rows div.record {
+  cursor: move;  
+}
+
+.rows div.name a {
+  cursor: default;
+}
+
+div.aliases {
+  width: 400px;
+}
+
+div.member {
+  width: 48px;
+  text-align: center;
+}
