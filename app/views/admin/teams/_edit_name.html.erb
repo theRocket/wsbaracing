@@ -1,5 +1,5 @@
 <% form_remote_tag(:url => {:action => 'update_name', :id => @team.to_param}) do -%>
-  <span>
+  <div class="name">
     <%= text_field_tag 'name', @team.name, :size => 30, 
           :class => 'edit_in_place_text_field', 
           :id => "team_#{@team.id}_name_text_field" %><%= 
@@ -7,5 +7,5 @@
           { :update => "team_#{@team.id}", 
             :url => { :action => "cancel_edit_name", :id => @team.to_param} },
           { :class => "cancel" } %>
-  </span>
+  </div>
 <% end -%>
