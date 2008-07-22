@@ -7,11 +7,11 @@
   </div>
 </form>
 
-<%= render :shared => "flash" %>
+<%= render :partial => "shared/flash", :locals => { :flash => flash } %>
 
-<div class="table_view" id="teams">
+<div class="active_record_grid" id="teams">
   <div class="header_row clear">
-    <div class="header name">Name</div>
+    <div class="header record">Name</div>
     <div class="header aliases">Aliases</div>
     <div class="header member last">Member</div>
   </div>
@@ -23,9 +23,10 @@
 
 <div class="buttons">
   <div style="float: left;">
-    <button type="button" name="new" id="new_button" value="+" class="new">&nbsp;</button><button 
+    <button type="button" 
+            name="new" id="new_button" value="+" class="new disabled">&nbsp;</button><button 
                type="button" name="delete" id="delete_button" value="&ndash;" class="delete disabled" 
-               onclick="delete_team()">&nbsp;</button>
+               onclick="deleteTeam()">&nbsp;</button>
   </div>
   <div style="float: right;">
     <button type="button" name="results" id="results_button" class="disabled" value="Results" 
@@ -39,10 +40,10 @@
 <%- for team in @teams -%>
   var team = 'team_<%= team.id %>';
   var team_row = 'team_<%= team.id %>_row';
-  captureClick($(team_row));
-  new Draggable(team, { delay:100, onEnd:function() { Droppables.add(team_row, {hoverclass:'hovering', onDrop:function(element){new Ajax.Request('/admin/teams/merge?target_id=<%= team.id %>', {asynchronous:true, evalScripts:true, parameters:'id=' + encodeURIComponent(element.id)})}})}, onStart:function() { Droppables.remove(team_row) }, revert:true})
-  Droppables.add(team_row, {hoverclass:'hovering', onDrop:function(element){team.src='/images/icons/spinner.gif'; new Ajax.Request('/admin/teams/merge?target_id=<%= team.id %>', {asynchronous:true, evalScripts:true, parameters:'id=' + encodeURIComponent(element.id)});Droppables.remove(team_row) }})
-  <%- end -%>
+  captureClick($(team_row));  
+  add_droppable_row_for(<%= team.id %>);
+  add_draggable_for(<%= team.id %>);
+<%- end -%>
 </script>
 
 <%= focus("name") %>
