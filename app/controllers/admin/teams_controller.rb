@@ -5,7 +5,6 @@ class Admin::TeamsController < ApplicationController
 
   def index
     @name = params['name'] || session['team_name'] || cookies[:team_name] || ''
-    
     if @name.blank?
       @teams = []
       flash[:info] = "Enter part of a team's name"
@@ -92,16 +91,12 @@ class Admin::TeamsController < ApplicationController
   # TODO Updated test for cancel
   def merge
     begin
-      if !params[:cancel].blank?
-        return render(:action => "cancel_edit_name")
-      else
-        team_to_merge_id = params[:id]
-        @team_to_merge = Team.find(team_to_merge_id)
-        @merged_team_name = @team_to_merge.name
-        @existing_team = Team.find(params[:target_id])
-        @existing_team.merge(@team_to_merge)
-        expire_cache
-      end
+      team_to_merge_id = params[:id]
+      @team_to_merge = Team.find(team_to_merge_id)
+      @merged_team_name = @team_to_merge.name
+      @existing_team = Team.find(params[:target_id])
+      @existing_team.merge(@team_to_merge)
+      expire_cache
     rescue Exception => e
       render :update do |page|
         page.visual_effect(:highlight, "team_#{@existing_team.id}_row", :startcolor => "#ff0000", :endcolor => "#FFDE14") if @existing_team
