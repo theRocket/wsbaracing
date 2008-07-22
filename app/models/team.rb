@@ -4,6 +4,8 @@
 #
 # Team names must be unique
 class Team < ActiveRecord::Base
+  
+  # TODO Remove team name unique constraint
 
   include Dirty
   
