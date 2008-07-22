@@ -129,4 +129,13 @@ class Admin::TeamsController < ApplicationController
       ExceptionNotifier.deliver_exception_notification(e, self, request, {})
     end
   end
+
+  # Exact dupe of racers controller
+  def destroy_alias
+    alias_id = params[:alias_id]
+    Alias.destroy(alias_id)
+    render :update do |page|
+      page.visual_effect(:puff, "alias_#{alias_id}", :duration => 2)
+    end
+  end
 end
