@@ -12,6 +12,7 @@ dragging = false;
 function add_droppable_row_for(record_id) {
   Droppables.add('team_' + record_id + '_row', 
                  { hoverclass:'hovering', 
+                   scroll:'rows',
                    onDrop:function(element) {
                      Droppables.remove('team_' + record_id + '_row');
                      $('team_' + record_id).addClassName("disabled");
