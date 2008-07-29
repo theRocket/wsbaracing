@@ -94,8 +94,8 @@ div.buttons a.right {
 }
 
 .odd {
-  background-color: #EEF2D6;
-  border: 2px solid #EEF2D6;
+  background-color: #F0FDEB;
+  border: 2px solid #F0FDEB;
 }
 
 .selected {
@@ -107,6 +107,10 @@ div.rows .record {
   background-image: url(/images/icons/people.gif);
   background-repeat: no-repeat;
   background-position: 8px 4px;
+}
+
+div.rows div.disabled {
+  background-image: url(/images/icons/spinner.gif);
 }
 
 .row div {
@@ -128,7 +132,6 @@ div.rows .record {
 
 .row div.editable a:hover {
   color: black;
-/*  background-color: #FAFED8;*/
   text-decoration: none;
   border-bottom-style: none;
 }

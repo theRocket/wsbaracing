@@ -79,7 +79,7 @@ module ApplicationHelper
   end
 
   # Should field from model object displayed by a RecordEditor
-  # TODO: Move to Admin::RecordEditor?
+  # TODO: Replace
   def attribute(record, name)
     render(:partial => '/admin/attribute', :locals => {:record => record, :name => name})
   end

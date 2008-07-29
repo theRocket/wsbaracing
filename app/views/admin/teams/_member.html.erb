@@ -1,2 +1,2 @@
 <%= check_box_tag "team_#{team.id}_member", "1", team.member?, 
-    :onchange => "new Ajax.Request('/admin/racers/toggle_attribute/#{team.id}?attribute=member', {asynchronous:true, evalScripts:true})" %>
+    :onchange => "new Ajax.Request('/admin/teams/toggle_member/#{team.id}', {asynchronous:true, evalScripts:true})" %>

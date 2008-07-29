@@ -89,6 +89,7 @@ class Admin::TeamsController < ApplicationController
   
   # Inline
   # TODO Updated test for cancel
+  # TODO Better UI clean on exception
   def merge
     begin
       team_to_merge_id = params[:id]

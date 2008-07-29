@@ -6,12 +6,16 @@ idRegex = /\d+/;
 // TODO replace global variable with better event handling
 dragging = false;
 
+// TODO Disabled Draggable and update UI as well as Droppable?
+// TODO Ensure Drag and drops are recreated afterwards
+// TODO Ensure everything (dragging, editing) is really disabled after drop
 function add_droppable_row_for(record_id) {
   Droppables.add('team_' + record_id + '_row', 
                  { hoverclass:'hovering', 
                    onDrop:function(element) {
                      Droppables.remove('team_' + record_id + '_row');
-                     // TODO Show progress/inactive 
+                     $('team_' + record_id).addClassName("disabled");
+                     new Effect.Opacity('team_' + record_id + '_row', { from: 1.0, to: 0.5, duration: 0.5 });
                      new Ajax.Request('/admin/teams/merge?target_id=' + record_id, 
                                       { asynchronous:true, 
                                         evalScripts:true, 
