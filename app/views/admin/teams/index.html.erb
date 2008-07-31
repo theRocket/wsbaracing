@@ -9,21 +9,21 @@
 
 <%= render :partial => "shared/flash", :locals => { :flash => flash } %>
 
-<div class="active_record_grid" id="teams">
-  <div class="header_row clear">
-    <div class="header record">Name</div>
-    <div class="header aliases">Aliases</div>
-    <div class="header member last">Member</div>
+<div class="active_record_grid span-23 last" id="teams">
+  <div class="header_row last">
+    <div class="header record span-10">Name</div>
+    <div class="header aliases span-10">Aliases</div>
+    <div class="header member span-3 last">Member</div>
   </div>
   
-  <div class="rows clear" id="rows">
+  <div class="rows span-24 last" id="rows">
   <%= render :partial => "team", :collection => @teams %>
   </div>
 </div>
 
-<div class="buttons">
+<div class="buttons last">
   <div style="float: left;">
-    <button type="button" 
+    <button type="button"
             name="new" id="new_button" value="+" class="new disabled">&nbsp;</button><button 
                type="button" name="delete" id="delete_button" value="&ndash;" class="delete disabled" 
                onclick="deleteTeam()">&nbsp;</button>

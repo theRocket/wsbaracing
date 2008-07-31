@@ -109,15 +109,17 @@ function captureClick(row) {
 }
 
 // TODO Fix flash messages makes table too tall
+// TODO Throws JavaScript error in IE
 function resize() {
-  if (window.innerHeight < 100) {
-    $("teams").setStyle({ height: 'auto' });
-  }
-  else {
-    var newHeight = window.innerHeight - 260;
-    if (newHeight < 50) newHeight = 50;
-    $("rows").setStyle({ height: newHeight + 'px' });
-  }
+  $("rows").setStyle({ height: '200px' });
+  // if (window.innerHeight < 100) {
+  //   $("teams").setStyle({ height: 'auto' });
+  // }
+  // else {
+  //   var newHeight = window.innerHeight - 260;
+  //   if (newHeight < 50) newHeight = 50;
+  //   $("rows").setStyle({ height: newHeight + 'px' });
+  // }
 }
 
 function deleteTeam() {

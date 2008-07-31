@@ -1,5 +1,5 @@
-<div class="row <%= cycle("even", "odd") %> clear" id="team_<%= team.id %>_row">
-  <div class="record editable" id="team_<%= team.id %>"><%= render(:partial => "name", :locals => { :team => team }) %></div>
-  <div class="aliases" id="team_<%= team.id %>_aliases"><%= render(:partial => "aliases", :locals => { :team => team }) %></div>
-  <div class="member"><%= render :partial => 'member', :locals => { :team => team } %></div>
+<div class="row <%= cycle("even", "odd") %> span-23 last" id="team_<%= team.id %>_row">
+  <div class="record editable span-10" id="team_<%= team.id %>"><%= render(:partial => "name", :locals => { :team => team }) %></div>
+  <div class="aliases span-10" id="team_<%= team.id %>_aliases"><%= render(:partial => "aliases", :locals => { :team => team }) %></div>
+  <div class="member span-3"><%= render :partial => 'member', :locals => { :team => team } %></div>
 </div>

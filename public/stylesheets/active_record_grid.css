@@ -66,6 +66,7 @@ div.buttons a.right {
 	border-width: 1px;
 	border-color: #B3B3B3;  
   margin: 0 auto;
+  float: left;
 }
 
 .header_row {
@@ -79,7 +80,6 @@ div.buttons a.right {
   padding-bottom: 4px;
   padding-left: 4px;
   padding-right: 4px;
-  display: inline-block;
   white-space: normal;
 }
 
@@ -114,7 +114,6 @@ div.rows div.disabled {
 }
 
 .row div {
-  display: inline-block;
   vertical-align: top;
   padding-top: 2px;
   padding-bottom: 2px;

@@ -1920,9 +1920,7 @@ Element.Methods = {
     for (var property in styles)
       if (property == 'opacity') element.setOpacity(styles[property]);
       else
-        elementStyle[(property == 'float' || property == 'cssFloat') ?
-          (elementStyle.styleFloat === undefined ? 'cssFloat' : 'styleFloat') :
-            property] = styles[property];
+        elementStyle[(property == 'float' || property == 'cssFloat') ? (elementStyle.styleFloat === undefined ? 'cssFloat' : 'styleFloat') : property] = styles[property];
 
     return element;
   },
