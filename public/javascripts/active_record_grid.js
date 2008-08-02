@@ -41,7 +41,7 @@ function clicked(e) {
   // defeat Safari bug
   if (targ.nodeType == 3) targ = targ.parentNode;
 
-  if (targ.localName != "DIV" && targ.localName != "div") {
+  if (targ.localName != "tr" && targ.localName != "TR" && targ.localName != "td" && targ.localName != "T") {
     return true;
   }
 
@@ -111,7 +111,6 @@ function captureClick(row) {
 // TODO Fix flash messages makes table too tall
 // TODO Throws JavaScript error in IE
 function resize() {
-  $("rows").setStyle({ height: '200px' });
   // if (window.innerHeight < 100) {
   //   $("teams").setStyle({ height: 'auto' });
   // }

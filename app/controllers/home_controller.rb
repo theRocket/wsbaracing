@@ -1,6 +1,11 @@
 # Homepage
 class HomeController < ApplicationController
   caches_page :index
+  layout :except => :table
+  
+  def table
+    @teams = Team.find(:all, :limit => 20)
+  end
         
   # Show homepage
   # === Assigns

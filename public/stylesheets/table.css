@@ -1,0 +1,161 @@
+body {
+  margin: 0;
+  padding: 0;
+  font: 13px/1.8em "Lucida Grande", Lucida, Verdana, sans-serif;
+  min-width: 920px;
+  min-height: 600px;
+}
+
+img {
+  border-style: none;
+}
+
+a, a:hover, a:active, a:visited {
+border: none;
+}
+#listBevel, #listTable {
+position: absolute;
+z-index: 2;
+border: 1px solid #989898;
+top: 85px;
+left: 227px;
+right: 37px;
+height: 270px;
+min-width: 654px;
+}
+
+#listTableHeaders {
+position: absolute;
+z-index: 3;
+top: 85px;
+left: 227px;
+right: 37px;
+height: 18px;
+min-width: 654px;
+border: 1px solid #989898;
+overflow: hidden;
+overflow-y: scroll;
+}
+
+.tableHeaderShadow {
+background: url(http://danvpeterson.com/aws/sites/my1p/images/interface/bevel_shadow.png) repeat-x;
+position: fixed;
+height: 5px;
+top: 105px;
+right: 53px;
+left: 228px;
+min-width: 639px;
+}
+
+#scrollBarCoverContainer {
+position: fixed;
+z-index: 5;
+top: 86px;
+left: 228px;
+right: 38px;
+height: 0;
+min-width: 654px;
+font-size: 11px;
+border: 1px none #989898;
+text-align: right;
+}
+
+#scrollBarCoverUp {
+background: url(http://danvpeterson.com/aws/sites/my1p/images/interface/list_header_bg.png) repeat-x;
+width: 14px;
+height: 18px;
+border-left: 1px solid #e5e5e5;
+float: right;
+}
+
+table#entryListHeaders th img.sortArrow {
+float: right;
+}
+
+table#entryListHeaders th a {
+color: #000;
+text-decoration: none;
+display: block;
+height: 18px;
+}
+
+table#entryListHeaders th:hover {
+background-position: 0 -18px;
+}
+
+table#entryListHeaders th {
+background: url(http://danvpeterson.com/aws/sites/my1p/images/interface/list_header_bg.png) repeat-x;
+border-left: 1px solid #e5e5e5;
+border-right: 1px solid #a5a5a5;
+text-align: left;
+padding: 0 5px;
+margin: 0;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+height: 18px;
+width: 42%;
+font-size: 11px;
+line-height: 1.6em;
+text-shadow: #fff 0 1px 0;
+}
+table#entryListHeaders th + th {
+width: 32%;
+}
+
+table#entryListHeaders th#selectedHeader {
+text-shadow: #d8e6ff 0 1px 0;
+background-image: url(http://danvpeterson.com/aws/sites/my1p/images/interface/list_header_selected.png);
+border-left-color: #c2d4f2;
+}
+
+#listTable {
+background-color: #fefefe;
+top: 104px;
+height: 251px;
+overflow: auto;
+overflow-x: hidden;
+overflow-y: scroll;
+font-size: 11px;
+border-collapse: collapse;
+}
+
+table#entryList {
+}
+
+table#entryList td {
+width: 42%;
+}
+
+span.truncateText {
+display: block;
+height: 18px;
+overflow: hidden;
+}
+
+/* make TD elements pretty. Provide alternating classes for striping the table */
+/* http://www.alistapart.com/articles/zebratables/                             */
+
+tbody.scrollContent td, tbody.scrollContent tr.normalRow td {
+background: #FFF;
+border-left: none;
+border-right: 1px solid #cbd1d8;
+padding: 1px 5px;
+height: 18px;
+line-height: 1.6em;
+margin: 0;
+}
+
+tbody.scrollContent tr.alternateRow td {
+background: #eff5ff;
+}
+
+tbody.scrollContent tr.selectedRow td {
+background: url(http://danvpeterson.com/aws/sites/my1p/images/interface/selected_row.png) repeat-x;
+color: #fff;
+border-right-style: hidden;
+}
+
+table#entryList td + td {
+width: 32%;
+}
