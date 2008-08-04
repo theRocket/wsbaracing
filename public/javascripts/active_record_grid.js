@@ -11,7 +11,6 @@ dragging = false;
 function add_droppable_row_for(record_id) {
   Droppables.add('team_' + record_id + '_row', 
                  { hoverclass:'hovering', 
-                   scroll:'rows',
                    onDrop:function(element) {
                      Droppables.remove('team_' + record_id + '_row');
                      $('team_' + record_id).addClassName("disabled");
@@ -26,22 +25,23 @@ function add_droppable_row_for(record_id) {
 }
 
 function add_draggable_for(record_id) {
-  new Draggable(team, { delay:100, 
-                        onEnd:function() { add_droppable_row_for(record_id); },
-                        onStart:function() { Droppables.remove('team_' + record_id + '_row'); dragging = true; }, 
-                                             revert:true }
-                )  
+  new Draggable('team_' + record_id, { delay:100,
+                                       superghosting: true,
+                                       onEnd:function() { add_droppable_row_for(record_id); },
+                                       onStart:function() { Droppables.remove('team_' + record_id + '_row'); dragging = true;}, 
+                                       revert:true }
+                );
 }
 
 function clicked(e) {
   if (!e) var e = window.event
-
+  
   if (e.target) targ = e.target;
   else if (e.srcElement) targ = e.srcElement;
   // defeat Safari bug
   if (targ.nodeType == 3) targ = targ.parentNode;
 
-  if (targ.localName != "tr" && targ.localName != "TR" && targ.localName != "td" && targ.localName != "T") {
+  if (targ.localName == "a" || targ.localName == "A") {
     return true;
   }
 
@@ -61,7 +61,7 @@ function clicked(e) {
     dragging = false;
   }
   else {
-    select(findRow(e.target));
+    select(findRow(targ));
   }
   return false;
 }
@@ -88,7 +88,7 @@ function select(row) {
 
 function clearSelection() {
   selectedId = null;
-  $("rows").childElements().each(function(row) { row.removeClassName("selected"); });
+  $$('div.records tbody > tr').each(function(row) { row.removeClassName("selected"); });
 }
 
 function enable_button(id) {
@@ -103,7 +103,8 @@ function disable_button(id) {
   }
 }
 
-function captureClick(row) {
+function captureClick(record_id) {
+  row = $('team_' + record_id + '_row');
   row.onclick = clicked;
   if (row.captureEvents) row.captureEvents(Event.CLICK);
 }

@@ -1,0 +1,219 @@
+.scrolling_table {
+  border: 1px solid #B3B3B3;  
+}
+
+.records table {
+  width: 100%;
+}
+
+.scroll_bar_cover_container {
+  border: none;
+  position: relative;
+  z-index: 5;
+  top: -24px;
+  right: 1px;
+  height: 0;
+  font-size: 11px;
+  text-align: right;
+  float: right;
+}
+
+.scroll_bar_cover_up {
+  background: white;
+  width: 14px;
+  height: 24px;
+  float: right;
+}
+
+.scrolling_table .headers {
+  z-index: 3;
+  overflow: hidden;
+  overflow-y: scroll;
+  width: 100%;
+  text-align: left;
+  font-weight: bold;
+  white-space: normal;
+}
+
+.scrolling_table .headers table {
+  width: 100%;
+}
+
+.scrolling_table .headers th {
+  text-align: left;
+  padding-top: 2px;
+  padding-bottom: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 18px;
+  font-size: 11px;
+  line-height: 1.6em;
+  text-shadow: #fff 0 1px 0;
+}
+
+.scrolling_table tbody td {
+  padding: 1px 5px;
+  height: 18px;
+  line-height: 1.6em;
+  margin: 0;
+}
+
+.scrolling_table table tr {
+  background-color: white;
+}
+
+.scrolling_table tr.odd {
+  background-color: #F0FDEB;
+}
+
+.scrolling_table tr.selected {
+  background-color: #D0FA30;
+}
+
+.scrolling_table tr.hovering {
+  background-color: #E9F79B;
+}
+
+.scrolling_table tr.disabled {
+  background-image: url(/images/icons/spinner.gif);
+}
+
+.scrolling_table td {
+  vertical-align: top;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
+  white-space: normal;  
+}
+
+div.records {
+  z-index: 2;
+  height: 251px;
+  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  font-size: 11px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+td.record {
+  width: 288px;
+  background-image: url(/images/icons/people.gif);
+  background-repeat: no-repeat;
+  background-position: 8px 4px;
+  cursor: move;  
+}
+
+th.record {
+  padding-left: 36px;
+  width: 288px;
+}
+
+td.record div {
+  padding-left: 32px;
+}
+
+td.editable a {
+  color: black;
+  text-decoration: none;
+  border-style: none;
+  border-width: 0px;
+}
+
+td.editable a:hover {
+  color: black;
+  text-decoration: none;
+  border-bottom-style: none;
+}
+
+td div.name a {
+  cursor: default;
+}
+
+td.editable input {
+  font-size: 12px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  position: relative;
+  top: -3px;
+  left: -4px;
+}
+
+.aliases {
+  width: 400px;
+}
+
+.member, .scrolling_table .headers th.member {
+  width: 48px;
+  text-align: center;
+}
+
+/* Buttons */
+button {
+  background-image: url(/images/buttons/shiny_background.gif);
+  background-position: left center;
+  background-color: rgb(251, 251, 251);
+  border-width: 1px; 
+  border-color: rgb(151, 151, 151); 
+  border-style: solid; 
+  font-weight: bold;
+  color: rgb(73, 73, 73);
+  font-size: 9pt;
+  vertical-align: center;
+  text-align: center;
+  margin-left: 8px;
+  margin-right: 0px;
+  padding-left: 8px;
+  padding-right: 8px;
+  height: 20px;
+  cursor: pointer;
+}
+
+button.new {
+  background-image: url(/images/buttons/plus.png);
+  width: 23px;
+  margin-left: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+button.delete {
+  background-image: url(/images/buttons/minus.png);
+  width: 23px;
+  border-left-style: none;
+  padding-left: 0px;
+  margin-left: 0px;
+}
+
+button.disabled {
+  opacity: 0.67;
+  -moz-opacity: 0.67;
+  filter:alpha(opacity=67);
+  cursor: auto;
+}
+.buttons {
+  text-align: left;
+  width: 100%;
+  margin-top: 8px;
+  padding: 0px;
+}
+
+.buttons a {
+  background: inherit;
+  border: none;
+  float: left;
+}
+
+.buttons img {
+  border: none;
+}
+
+div.buttons a.right {
+  float: right;
+}

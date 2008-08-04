@@ -275,7 +275,7 @@ var Draggable = Class.create({
       this._isScrollChild = Element.childOf(this.element, options.scroll);
     }
 
-    Element.makePositioned(this.element); // fix IE    
+    // Element.makePositioned(this.element); // fix IE    
 
     this.options  = options;
     this.dragging = false;   

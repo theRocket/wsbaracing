@@ -9,17 +9,33 @@
 
 <%= render :partial => "shared/flash", :locals => { :flash => flash } %>
 
-<table class="active_record_grid_header" id="teams">
-  <tr>
-    <th class="record">Name</th>
-    <th class="aliases">Aliases</th>
-    <th class="member">Member</th>
-  </tr>
-</table>
-<div class="active_record_grid" id="rows">
-  <table>
-  <%= render :partial => "team", :collection => @teams %>
-  </table>
+
+
+<div class="scrolling_table">
+  <!--This is a super hack job to get the table header to remain fixed, the columns to stay lined up, and the scrollbar to be covered up on the header-->
+  <div class="headers">
+    <table cellspacing="0">
+      <thead>
+        <tr>
+          <th class="record">Name</th>
+          <th class="aliases">Aliases</th>
+          <th class="member">Member</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
+  <div class="scroll_bar_cover_container">
+    <div class="scroll_bar_cover_up"></div>
+  </div>
+  <!--END hack job-->
+
+  <div class="records">
+    <table cellspacing="0">
+    <tbody>
+      <%= render :partial => "team", :collection => @teams %>
+    </tbody>
+    </table>
+  </div>
 </div>
 
 <div class="buttons last">
@@ -39,9 +55,7 @@
 
 <script type="text/javascript" charset="utf-8">
 <%- for team in @teams -%>
-  var team = 'team_<%= team.id %>';
-  var team_row = 'team_<%= team.id %>_row';
-  captureClick($(team_row));  
+  captureClick(<%= team.id %>);  
   add_droppable_row_for(<%= team.id %>);
   add_draggable_for(<%= team.id %>);
 <%- end -%>
