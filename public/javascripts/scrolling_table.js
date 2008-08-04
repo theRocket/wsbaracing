@@ -7,7 +7,6 @@ dragging = false;
 // TODO Disabled Draggable and update UI as well as Droppable?
 // TODO Ensure Drag and drops are recreated afterwards
 // TODO Ensure everything (dragging, editing) is really disabled after drop
-// TODO: scroll container on drag?
 function add_droppable_row_for(record_id) {
   Droppables.add('team_' + record_id + '_row', 
                  { hoverclass:'hovering', 
