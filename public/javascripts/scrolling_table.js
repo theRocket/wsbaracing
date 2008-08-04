@@ -26,10 +26,12 @@ function add_droppable_row_for(record_id) {
 
 function add_draggable_for(record_id) {
   new Draggable('team_' + record_id, { delay:100,
+                                       scroll: $('records'),
                                        superghosting: true,
+                                       revert:true,
                                        onEnd:function() { add_droppable_row_for(record_id); },
-                                       onStart:function() { Droppables.remove('team_' + record_id + '_row'); dragging = true;}, 
-                                       revert:true }
+                                       onStart:function() { Droppables.remove('team_' + record_id + '_row'); dragging = true;}
+                                     }
                 );
 }
 
@@ -61,19 +63,11 @@ function clicked(e) {
     dragging = false;
   }
   else {
-    select(findRow(targ));
+    select(targ.up('tr'));
   }
   return false;
 }
 
-function findRow(element) {
-  if (element.hasClassName("row")) {
-    return element;
-  }
-  else {
-    return findRow(element.parentNode);
-  }
-}
 
 function select(row) {
   if (!row.hasClassName("selected")) {
@@ -155,7 +149,7 @@ function cancelEditName(id) {
 
 function restripeTable() {
   index = 0;
-  $("rows").childElements().each(function(row) {
+  $('records').down('tbody').childElements().each(function(row) {
     if (row.hasClassName('even') || row.hasClassName('odd')) {
       row.removeClassName('odd');
       row.removeClassName('even');

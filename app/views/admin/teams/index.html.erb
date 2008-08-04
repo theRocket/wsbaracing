@@ -9,8 +9,6 @@
 
 <%= render :partial => "shared/flash", :locals => { :flash => flash } %>
 
-
-
 <div class="scrolling_table">
   <!--This is a super hack job to get the table header to remain fixed, the columns to stay lined up, and the scrollbar to be covered up on the header-->
   <div class="headers">
@@ -29,7 +27,7 @@
   </div>
   <!--END hack job-->
 
-  <div class="records">
+  <div class="records" id="records">
     <table cellspacing="0">
     <tbody>
       <%= render :partial => "team", :collection => @teams %>

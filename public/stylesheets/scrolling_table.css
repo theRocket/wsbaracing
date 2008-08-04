@@ -51,12 +51,16 @@
   text-overflow: ellipsis;
   height: 18px;
   font-size: 11px;
+  font-weight: bold;
   line-height: 1.6em;
   text-shadow: #fff 0 1px 0;
 }
 
 .scrolling_table tbody td {
-  padding: 1px 5px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
   height: 18px;
   line-height: 1.6em;
   margin: 0;
@@ -110,9 +114,9 @@ td.record {
   cursor: move;  
 }
 
-th.record {
+.scrolling_table .headers th.record {
   padding-left: 36px;
-  width: 288px;
+  width: 256px;
 }
 
 td.record div {
@@ -152,6 +156,10 @@ td.editable input {
 .member, .scrolling_table .headers th.member {
   width: 48px;
   text-align: center;
+}
+
+.member input {
+  margin-right: 0px;
 }
 
 /* Buttons */
