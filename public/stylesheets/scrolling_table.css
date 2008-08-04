@@ -56,16 +56,6 @@
   text-shadow: #fff 0 1px 0;
 }
 
-.scrolling_table tbody td {
-  padding-top: 2px;
-  padding-bottom: 2px;
-  padding-left: 4px;
-  padding-right: 4px;
-  height: 18px;
-  line-height: 1.6em;
-  margin: 0;
-}
-
 .scrolling_table table tr {
   background-color: white;
 }
@@ -86,13 +76,14 @@
   background-image: url(/images/icons/spinner.gif);
 }
 
-.scrolling_table td {
-  vertical-align: top;
+.scrolling_table tbody td {
   padding-top: 2px;
   padding-bottom: 2px;
   padding-left: 4px;
   padding-right: 4px;
-  white-space: normal;  
+  line-height: 1.6em;
+  margin: 0;
+  vertical-align: top;
 }
 
 div.records {
@@ -141,12 +132,12 @@ td div.name a {
 }
 
 td.editable input {
-  font-size: 12px;
+  font-size: 11px;
   padding-top: 0px;
   padding-bottom: 0px;
   position: relative;
   top: -3px;
-  left: -4px;
+  left: -5px;
 }
 
 .aliases {
