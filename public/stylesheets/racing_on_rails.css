@@ -556,11 +556,6 @@ td#left_racer {
 	padding-right: 16px;
 }
 
-.hovering, div.rows div.row.hovering {
-  border: 2px solid #D0FA30;
-  background-color: #E9F79B;
-}
-
 table.base tr.error td {
   color: rgb(250, 50, 50);
   font-weight: bold;

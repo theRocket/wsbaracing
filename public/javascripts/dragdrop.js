@@ -1,3 +1,5 @@
+// script.aculo.us dragdrop.js v1.8.1, Thu Jan 03 22:07:12 -0500 2008
+
 // Copyright (c) 2005-2007 Thomas Fuchs (http://script.aculo.us, http://mir.aculo.us)
 //           (c) 2005-2007 Sammi Williams (http://www.oriontransfer.co.nz, sammi@oriontransfer.co.nz)
 // 
@@ -35,6 +37,7 @@ var Droppables = {
     
     if(options.accept) options.accept = [options.accept].flatten();
 
+    // Unfortunately, this messes up the scrolling DIV if it's in add
     // Element.makePositioned(element); // fix IE
     options.element = element;
 
@@ -274,7 +277,8 @@ var Draggable = Class.create({
       options.scroll = $(options.scroll);
       this._isScrollChild = Element.childOf(this.element, options.scroll);
     }
-
+    
+    // Unfortunately, this messes up the scrolling DIV
     // Element.makePositioned(this.element); // fix IE    
 
     this.options  = options;
@@ -320,6 +324,7 @@ var Draggable = Class.create({
   },
   
   startDrag: function(event) {
+    // Element.makePositioned(this.element); 
     this.dragging = true;
     if(!this.delta)
       this.delta = this.currentDelta();
@@ -335,6 +340,7 @@ var Draggable = Class.create({
       if (!this.element._originallyAbsolute)
         Position.absolutize(this.element);
       this.element.parentNode.insertBefore(this._clone, this.element);
+      // document.body.appendChild(this.element);
     }
     
     if(this.options.scroll) {
@@ -403,9 +409,14 @@ var Draggable = Class.create({
     }
 
     if(this.options.ghosting) {
-      if (!this.element._originallyAbsolute)
+      if (this.element._originallyAbsolute) {
+        delete this.element._originallyAbsolute;
+      }
+      else {
         Position.relativize(this.element);
-      delete this.element._originallyAbsolute;
+      }
+      document.body.removeChild(this.element);
+      this._clone.parentNode.insertBefore(this.element, this._clone);
       Element.remove(this._clone);
       this._clone = null;
     }

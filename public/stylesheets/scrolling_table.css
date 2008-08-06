@@ -68,8 +68,9 @@
   background-color: #D0FA30;
 }
 
-.scrolling_table tr.hovering {
-  background-color: #E9F79B;
+.scrolling_table div.hovering {
+/*  background-color: #E9F79B;*/
+  border: 2px solid #D0FA30;
 }
 
 .scrolling_table tr.disabled {
