@@ -40,10 +40,6 @@ YAHOO.extend(ScrollingTableDDProxy, YAHOO.util.DDProxy, {
         var s  = div.style;
         s.position   = "absolute";
         s.visibility = "hidden";
-        // TODO use setStyle('opacity')
-        s.opacity    = "0.50";
-        Dom.setStyle(div, '-moz-opacity', '0.50');
-        Dom.setStyle(div, 'filter', 'alpha(opacity=50)');        
         s.cursor     = "default";
         s.zIndex     = 999;
         s.height     = "auto";
@@ -56,6 +52,8 @@ YAHOO.extend(ScrollingTableDDProxy, YAHOO.util.DDProxy, {
         s.paddingLeft = "32px";
         s.fontFamily = this.getEl().style.fontFamily;
         s.fontSize = this.getEl().style.fontSize;
+        // Dom.setStyle should work cross-browser.
+        Dom.setStyle(div, 'opacity', '0.5');
 
         var _data = document.createElement('div');
         Dom.setStyle(_data, 'height', '100%');
@@ -100,44 +98,27 @@ YAHOO.extend(ScrollingTableDDProxy, YAHOO.util.DDProxy, {
         body.insertBefore(div, body.firstChild);
     }
   },
+  
+  b4StartDrag: function(x, y) {
+    // Reset in case reused
+    YAHOO.util.Dom.setStyle(this.getDragEl(), 'opacity', '0.5');
+    YAHOO.util.Dom.setStyle(this.getDragEl(), 'z-index', '999');
+    this.showFrame(x, y);
+  },
 
   endDrag: function(e) {
       var DOM = YAHOO.util.Dom;
       var lel = this.getEl();
       var del = this.getDragEl();
-      // 
-      // // Show the drag frame briefly so we can get its position
+      
+      // Show the drag frame briefly so we can get its position
       DOM.setStyle(del, "visibility", ""); 
-      // 
-      // // Hide the linked element before the move to get around a Safari 
-      // // rendering bug.
-      // DOM.setStyle(lel, "visibility", "hidden"); 
-      // DOM.setStyle(lel, "visibility", ""); 
-      // 
+
       left_offset = DOM.getX(del) - DOM.getX(lel);
       top_offset = DOM.getY(del) - DOM.getY(lel);
-      var dur = Math.sqrt(Math.abs(top_offset^2)+Math.abs(left_offset^2))*0.02;
-      var dragElementClone = document.createElement("div");
-      dragElementClone.style.width = '200px';
-      dragElementClone.style.height = '20px';
-      dragElementClone.style.backgroundColor = 'red';
-      dragElementClone.style.zIndex = 999;
-      dragElementClone.style.position = "absolute";
-      
-      document.body.insertBefore(dragElementClone, document.body.firstChild);
-      new YAHOO.util.Motion(dragElementClone, {points: { from: [DOM.getX(del), DOM.getY(del)], to: [DOM.getX(lel), DOM.getY(lel)] } }, 1, YAHOO.util.Easing.easeOut).animate();
-      new YAHOO.util.Anim(dragElementClone, { 
-                                              opacity: { to: 0.0 }, 
-                                              zIndex: { to: -1 },
-                                              left: { from: DOM.getX(del), to: DOM.getX(lel) }, 
-                                              top: { from: DOM.getY(del), to: DOM.getY(lel) }
-                                            }).animate();
-      YAHOO.util.DDM.moveToEl(lel, del);
-      DOM.setStyle(del, "visibility", "hidden"); 
-      // new Effect.Move(del, { x: -left_offset, y: -top_offset, duration: dur});
-      // new Effect.Opacity(del, {duration:0.2, from:0.5, to:0.0});
-      // new Effect.Morph(del, {style: 'visibility: hidden; opacity: 0.5;', duration: 0.1});
-      // new Effect.Move(del, { y: -100, duration: 0.1});
+      var dur = Math.sqrt(Math.abs(top_offset^2)+Math.abs(left_offset^2))*0.02;      
+      new YAHOO.util.Motion(del, {points: { from: [DOM.getX(del), DOM.getY(del)], to: [DOM.getX(lel), DOM.getY(lel)] } }, 1, YAHOO.util.Easing.easeOut).animate();
+      new YAHOO.util.Anim(del, { opacity: { to: 0.2 }, zIndex: { to: -1 } }).animate();
   }
 });
 
