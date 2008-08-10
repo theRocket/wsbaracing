@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>render_from_html (Yui4Rails::Widgets::DataTable)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/yui4rails/widgets/datatable.rb, line 110</span>
+            <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">render_from_html</span>
+              <span class="ruby-value str">&quot;&lt;script type=\&quot;text/javascript\&quot;&gt;\n\#{get_configs}\nYAHOO.util.Event.addListener(window, \&quot;load\&quot;, function() {\nYAHOO.example.EnhanceFromMarkup = new function() {\nvar myColumnDefs = \#{col_defs_to_json};\nthis.parseNumberFromCurrency = function(sString) {\n//remove commas\nsString = sString.replace(/,/, '');\n// Remove dollar sign and make it a float\nreturn parseFloat(sString.substring(1));\n};\nthis.myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom.get(\&quot;\#{@table_id}\&quot;));\nthis.myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;\nthis.myDataSource.responseSchema = {\nfields: \#{data_keys_to_json}\n};\nthis.myDataTable = new YAHOO.widget.DataTable(\&quot;\#{@table_div_id}\&quot;, myColumnDefs,\nthis.myDataSource, myConfigs);\n\n};\n});\n&lt;/script&gt;\n&quot;</span>
+        <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

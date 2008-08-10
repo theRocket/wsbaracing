@@ -68,9 +68,8 @@
   background-color: #D0FA30;
 }
 
-.scrolling_table div.hovering {
-/*  background-color: #E9F79B;*/
-  border: 2px solid #D0FA30;
+.scrolling_table tr.draggingOver {
+  background-color: #E9F79B;
 }
 
 .scrolling_table tr.disabled {
@@ -103,7 +102,7 @@ td.record {
   background-image: url(/images/icons/people.gif);
   background-repeat: no-repeat;
   background-position: 8px 4px;
-  cursor: move;  
+/*  cursor: move;  */
 }
 
 .scrolling_table .headers th.record {

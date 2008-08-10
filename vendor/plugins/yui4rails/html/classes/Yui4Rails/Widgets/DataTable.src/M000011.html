@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>new (Yui4Rails::Widgets::DataTable)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/yui4rails/widgets/datatable.rb, line 62</span>
+      <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+        <span class="ruby-keyword kw">case</span> <span class="ruby-identifier">args</span>[<span class="ruby-value">0</span>]
+        <span class="ruby-keyword kw">when</span> <span class="ruby-constant">Hash</span>
+          <span class="ruby-identifier">options</span> = <span class="ruby-identifier">args</span>[<span class="ruby-value">0</span>]
+          <span class="ruby-ivar">@table_div_id</span> = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:table_div_id</span>]
+          <span class="ruby-ivar">@table_id</span>     = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:table_id</span>]    
+          <span class="ruby-ivar">@col_defs</span>     = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:col_defs</span>]    
+          <span class="ruby-ivar">@data_rows</span>    = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:data_rows</span>]   
+          <span class="ruby-ivar">@footer_row</span>   = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:footer_row</span>]  
+          <span class="ruby-ivar">@data_keys</span>    = <span class="ruby-identifier">options</span>[<span class="ruby-identifier">:data_keys</span>]   
+          <span class="ruby-keyword kw">if</span> <span class="ruby-ivar">@data_rows</span> <span class="ruby-keyword kw">and</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@data_keys</span>
+            <span class="ruby-ivar">@data_keys</span> = <span class="ruby-constant">Widgets</span>.<span class="ruby-identifier">extract_keys</span>(<span class="ruby-identifier">data_rows</span>)
+          <span class="ruby-keyword kw">end</span>
+        <span class="ruby-keyword kw">when</span> <span class="ruby-constant">String</span>
+          <span class="ruby-ivar">@table_div_id</span> = <span class="ruby-identifier">args</span>[<span class="ruby-value">0</span>]
+          <span class="ruby-ivar">@col_defs</span> = <span class="ruby-identifier">args</span>[<span class="ruby-value">1</span>] 
+          <span class="ruby-ivar">@data_rows</span> = <span class="ruby-identifier">args</span>[<span class="ruby-value">2</span>] 
+          <span class="ruby-ivar">@data_keys</span> = <span class="ruby-constant">Widgets</span>.<span class="ruby-identifier">extract_keys</span>(<span class="ruby-ivar">@data_rows</span>)
+          <span class="ruby-ivar">@footer_row</span> = <span class="ruby-identifier">args</span>[<span class="ruby-value">3</span>] <span class="ruby-operator">||</span> <span class="ruby-value str">''</span> 
+        <span class="ruby-keyword kw">end</span>
+      <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

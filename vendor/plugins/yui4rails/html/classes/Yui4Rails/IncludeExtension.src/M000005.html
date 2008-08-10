@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>add_charts_includes (Yui4Rails::IncludeExtension)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/yui4rails/include_extension.rb, line 10</span>
+          <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">add_charts_includes</span>
+                        <span class="ruby-ivar">@yui_javascript</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;utilities/utilities&quot;</span>
+                        <span class="ruby-ivar">@yui_javascript</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;datasource/datasource-beta-min&quot;</span>
+                        <span class="ruby-ivar">@yui_javascript</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;json/json-min&quot;</span>
+                        <span class="ruby-ivar">@yui_javascript</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">&quot;charts/charts-experimental-min&quot;</span>  
+                        <span class="ruby-ivar">@yui_script</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-value str">%{YAHOO.widget.Chart.SWFURL = &quot;/yui/charts/assets/charts.swf&quot;;}</span>
+          <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

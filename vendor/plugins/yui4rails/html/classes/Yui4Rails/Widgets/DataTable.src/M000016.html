@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>render_from_json (Yui4Rails::Widgets::DataTable)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/yui4rails/widgets/datatable.rb, line 138</span>
+            <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">render_from_json</span>
+              <span class="ruby-value str">&quot;&lt;div id=\&quot;\#{@table_div_id}\&quot; class=\&quot;yui-skin-sam\&quot;&gt;&lt;/div&gt;\n&lt;script type=\&quot;text/javascript\&quot;&gt;\nYAHOO.util.Event.addListener(window, \&quot;load\&quot;, function() {\nvar myData = \#{@data_rows.to_json};\nvar myColumnDefs = \#{@col_defs.to_json};\nmyDataSource = new YAHOO.util.DataSource(myData);\nmyDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;\nmyDataSource.responseSchema = {\nfields: \#{@data_keys.to_json}\n};\nthis.myDataTable = new YAHOO.widget.DataTable(\&quot;\#{@table_div_id}\&quot;, myColumnDefs, myDataSource);\nvar tbody_id = myDataTable._sId + \&quot;-bodytable\&quot;;\n$(tbody_id).createTFoot().innerHTML = '\#{@footer_row}';\n\n});\n&lt;/script&gt;\n&quot;</span>
+            <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html 
+     PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+  <title>render (Yui4Rails::Widgets::Chart)</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <link rel="stylesheet" href="../../../.././rdoc-style.css" type="text/css" media="screen" />
+</head>
+<body class="standalone-code">
+  <pre><span class="ruby-comment cmt"># File lib/yui4rails/widgets/charts.rb, line 12</span>
+            <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">render</span>
+              <span class="ruby-value str">&quot;&lt;style type=\&quot;text/css\&quot;&gt;\n#page #legend {\nlist-style: none;\nbackground: #ffffff;\nwidth: 18%;\nfloat: right;\nmargin: 0;\npadding: 0;\n}\n#legend li {\nheight: 1.2em;\npadding-left: 15px;\nmargin-bottom: 4px;\n}\n.categoryName {\ndisplay: block;\npadding-left: 4px;\nbackground: #ffffff;\n}\n.blue {\nbackground: #00b8bf;\n}\n.aqua {\nbackground: #8dd5e7;\n}\n.yellow {\nbackground: #edff9f;\n}\n.orange {\nbackground: #ffa928;\n}\n#chart_container {\nwidth: 740px;\n}\n#yui_chart {\nwidth: 80%;\nheight: \#{@data_rows.size * 100}px;\nfloat: left;\n}\n.clear {\nclear: both;\n}\n&lt;/style&gt;\n&lt;div id=\&quot;chart_container\&quot;&gt;\n&lt;div id=\&quot;\#{@chart_id}\&quot; class=\&quot;yui-skin-sam\&quot;&gt;&lt;/div&gt;\n&lt;ul id=\&quot;legend\&quot;&gt;\n&lt;li class=\&quot;blue\&quot;&gt;&lt;span class=\&quot;categoryName\&quot;&gt;Coupon Count&lt;/span&gt;&lt;/li&gt;\n&lt;li class=\&quot;aqua\&quot;&gt;&lt;span class=\&quot;categoryName\&quot;&gt;Coupon Value&lt;/span&gt;&lt;/li&gt;\n&lt;li class=\&quot;yellow\&quot;&gt;&lt;span class=\&quot;categoryName\&quot;&gt;Redeemed Mean&lt;/span&gt;&lt;/li&gt;\n&lt;li class=\&quot;orange\&quot;&gt;&lt;span class=\&quot;categoryName\&quot;&gt;Redeemed StdDev&lt;/span&gt;&lt;/li&gt;\n&lt;/ul&gt;\n&lt;/div&gt;\n&lt;div class=\&quot;clear\&quot;/&gt;\n&lt;script type=\&quot;text/javascript\&quot;&gt;\nYAHOO.util.Event.addListener(window, \&quot;load\&quot;, function() {\nvar myData = \#{@data_rows.reverse.to_json};\nvar myColumnDefs = \#{@column_definitions.to_json};\nvar myDataSource = new YAHOO.util.DataSource(myData);\nmyDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;\nmyDataSource.responseSchema = {\nfields: \#{@data_keys.to_json}\n};\n\nvar seriesDef = [ { xField: \&quot;redeemed_coupon_count\&quot;, displayName: \&quot;Coupon Count\&quot; },\n{ xField: \&quot;redeemed_coupon_value\&quot;, displayName: \&quot;Coupon Value\&quot; },\n{ xField: \&quot;redeemed_redemption_mean_(hours)\&quot;, displayName: \&quot;Redeemed Mean\&quot; },\n{ xField: \&quot;redeemed_redemption_stddev_(hours)\&quot;, displayName: \&quot;Redeemed Standard Deviation\&quot; }\n];\n\nvar countAxis = new YAHOO.widget.NumericAxis();\n\nvar mychart = new YAHOO.widget.BarChart( \&quot;\#{@chart_id}\&quot;, myDataSource, { series: seriesDef, yField: \&quot;row_dimension_label\&quot;, xAxis: countAxis });\n});\n&lt;/script&gt;\n&quot;</span>
+            <span class="ruby-keyword kw">end</span></pre>
+</body>
+</html>

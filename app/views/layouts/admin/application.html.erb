@@ -15,14 +15,15 @@
     <%= stylesheet_link_tag 'racing_on_rails' %>
     <%= stylesheet_link_tag 'scrolling_table' %>
     <%= javascript_include_tag :defaults %>
+    <%= include_yui :dragdrop %>
+    <%= javascript_include_tag "application" %>
     <%= javascript_include_tag "scrolling_table" %>
-    <%= javascript_include_tag "dragdropextra" %>
     <!--[if IE]>
     <%= javascript_include_tag "ie" %>
     <![endif]-->
   </head>
 
-  <body onload="resize(); setFocus()" onresize="resize()">
+  <body onload="resizeScrollingTable(); setFocus()" onresize="resizeScrollingTable()">
   <div class="shadow_2">
     <div class="shadow_1">
       <div class="frame" id="frame">
