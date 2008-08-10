@@ -88,8 +88,7 @@
 
 div.records {
   z-index: 2;
-  height: 251px;
-  overflow: auto;
+  height: 200px;
   overflow-x: hidden;
   overflow-y: scroll;
   font-size: 11px;
@@ -102,7 +101,7 @@ td.record {
   background-image: url(/images/icons/people.gif);
   background-repeat: no-repeat;
   background-position: 8px 4px;
-/*  cursor: move;  */
+  cursor: move;  
 }
 
 .scrolling_table .headers th.record {

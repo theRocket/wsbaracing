@@ -11,9 +11,8 @@ dragging = false;
 // TODO Ensure Drag and drops are recreated afterwards
 // TODO Ensure everything (dragging, editing) is really disabled after drop
 // Move DOM-ready to one method that encapsulates all of this behavior
-// TODO Disable DD when editing
-// TODO Re-enable DD after editing
 // TODO Scroll to bottom of merge? message
+// TODO invalid drop doesn't do revert animation in big lists with overflow
 
 ScrollingTableDDProxy = function(id, recordName, config) {
   this.recordName = recordName;
@@ -22,6 +21,7 @@ ScrollingTableDDProxy = function(id, recordName, config) {
 
 YAHOO.extend(ScrollingTableDDProxy, YAHOO.util.DDProxy, {
   labelText: "",
+  scroll: true,
   
   createFrame: function() {
     var self=this, body=document.body;
@@ -126,7 +126,98 @@ YAHOO.extend(ScrollingTableDDProxy, YAHOO.util.DDProxy, {
       new YAHOO.util.Motion(del, {points: { from: [DOM.getX(del), DOM.getY(del)], to: [DOM.getX(lel), DOM.getY(lel)] } }, 1, YAHOO.util.Easing.easeOut).animate();
       new YAHOO.util.Anim(del, { opacity: { to: 0.2 }, zIndex: { to: -1 } }).animate();      
     }
-  }
+  },
+  
+  // onDrag: function(e) {
+  //   var x = YAHOO.util.Dom.getX(this.getDragEl());
+  //   var y = YAHOO.util.Dom.getY(this.getDragEl());
+  //   var records = YAHOO.util.Dom.get("records");
+  //   var recordsX = YAHOO.util.Dom.getX(records);
+  //   var recordsY = YAHOO.util.Dom.getY(records);
+  //   if ((y >= recordsY - 12) && (y < recordsY + 12)) {
+  //     this.scrollSpeedY = -1;
+  //     this.scrollInterval = setInterval(this.scrollRecords.bind(this), 20);
+  //   } 
+  //   else if ((y > (recordsY + records.getHeight() - 12)) && (y <= (recordsY + records.getHeight() + 12))) {
+  //     this.scrollSpeedY = 1;
+  //     this.scrollInterval = setInterval(this.scrollRecords.bind(this), 20);
+  //   } 
+  //   else {
+  //     if (this.scrollInterval) {
+  //       this.scrollSpeedY = 0;
+  //       clearInterval(this.scrollInterval);
+  //       this.scrollInterval = null;
+  //     }
+  //   }
+  // },
+  
+  autoScroll: function(x, y, h, w) {
+
+      if (this.scroll) {
+        var records = YAHOO.util.Dom.get("records");
+          // The client height
+          var clientH = records.getHeight();
+
+          // The client width
+          var clientW = this.DDM.getClientWidth();
+
+          // The amt scrolled down
+          var st = this.DDM.getScrollTop();
+
+          // The amt scrolled right
+          var sl = this.DDM.getScrollLeft();
+
+          // Location of the bottom of the element
+          var bot = h + y;
+
+          // Location of the right of the element
+          var right = w + x;
+
+          // The distance from the cursor to the bottom of the visible area, 
+          // adjusted so that we don't scroll if the cursor is beyond the
+          // element drag constraints
+          var toBot = (clientH + st - y - this.deltaY);
+
+          // The distance from the cursor to the right of the visible area
+          var toRight = (clientW + sl - x - this.deltaX);
+
+
+          // How close to the edge the cursor must be before we scroll
+          // var thresh = (document.all) ? 100 : 40;
+          var thresh = 40;
+
+          // How many pixels to scroll per autoscroll op.  This helps to reduce 
+          // clunky scrolling. IE is more sensitive about this ... it needs this 
+          // value to be higher.
+          var scrAmt = (document.all) ? 80 : 30;
+
+          // Scroll down if we are near the bottom of the visible page and the 
+          // obj extends below the crease
+          // console.log(bot + ' ' + clientH +  ' ' + toBot + ' ' + thresh);
+          if ( bot > clientH && toBot < thresh ) { 
+            console.log("scroll");
+              records.scrollTo(sl, st + scrAmt); 
+          }
+
+          // Scroll up if the window is scrolled down and the top of the object
+          // goes above the top border
+          if ( y < st && st > 0 && y - st < thresh ) { 
+              records.scrollTo(sl, st - scrAmt); 
+          }
+
+          // Scroll right if the obj is beyond the right border and the cursor is
+          // near the border.
+          if ( right > clientW && toRight < thresh ) { 
+              records.scrollTo(sl + scrAmt, st); 
+          }
+
+          // Scroll left if the window has been scrolled to the right and the obj
+          // extends past the left border
+          if ( x < sl && sl > 0 && x - sl < thresh ) { 
+              records.scrollTo(sl - scrAmt, st);
+          }
+      }
+  },
 });
 
 function add_draggable_for(recordId, recordName) {
@@ -136,89 +227,6 @@ function add_draggable_for(recordId, recordName) {
         resizeFrame: false
       });
       
-      d.autoScroll = function(x, y, h, w) {
-
-          if (this.scroll) {
-            recordsDiv = $('records');
-            recordsX = YAHOO.util.Dom.getX(recordsDiv);
-            recordsY = YAHOO.util.Dom.getY(recordsDiv);
-            
-
-              // The client height
-              var clientH = recordsDiv.getHeight();
-
-              // The client width
-              var clientW = recordsDiv.getWidth();
-
-              // The amt scrolled down
-              var st = this.DDM.getScrollTop();
-
-              // The amt scrolled right
-              var sl = this.DDM.getScrollLeft();
-
-              // Location of the bottom of the element
-              var bot = h + y;
-
-              // Location of the right of the element
-              var right = w + x;
-
-              // The distance from the cursor to the bottom of the visible area, 
-              // adjusted so that we don't scroll if the cursor is beyond the
-              // element drag constraints
-              var toBot = (clientH + st - y - this.deltaY);
-
-              // The distance from the cursor to the right of the visible area
-              var toRight = (clientW + sl - x - this.deltaX);
-
-
-              // How close to the edge the cursor must be before we scroll
-              // var thresh = (document.all) ? 100 : 40;
-              var thresh = 40;
-
-              // How many pixels to scroll per autoscroll op.  This helps to reduce 
-              // clunky scrolling. IE is more sensitive about this ... it needs this 
-              // value to be higher.
-              var scrAmt = (document.all) ? 80 : 30;
-
-              // Scroll down if we are near the bottom of the visible page and the 
-              // obj extends below the crease
-              if ( bot > clientH && toBot < thresh ) { 
-                  recordsDiv.scrollTo(sl, st + scrAmt); 
-              }
-
-              // Scroll up if the window is scrolled down and the top of the object
-              // goes above the top border
-              if ( y < st && st > 0 && y - st < thresh ) { 
-                  recordsDiv.scrollTo(sl, st - scrAmt); 
-              }
-
-              // Scroll right if the obj is beyond the right border and the cursor is
-              // near the border.
-              if ( right > clientW && toRight < thresh ) { 
-                  recordsDiv.scrollTo(sl + scrAmt, st); 
-              }
-
-              // Scroll left if the window has been scrolled to the right and the obj
-              // extends past the left border
-              if ( x < sl && sl > 0 && x - sl < thresh ) { 
-                  recordsDiv.scrollTo(sl - scrAmt, st);
-              }
-          }
-      }
-      
-            // d.onDrag = function(e) {
-      //   x = YAHOO.util.Event.getPageX(e);
-      //   y = YAHOO.util.Event.getPageY(e);
-      //   records = YAHOO.util.Dom.get("records");
-      //   recordsX = YAHOO.util.Dom.getX(records);
-      //   recordsY = YAHOO.util.Dom.getY(records);
-      //   if (y >= recordsY && y < recordsY + 8) {
-      //     records.scrollTop = records.scrollTop - 8;
-      //   }
-      //   if (y > recordsY + records.getHeight() - 8 && y <= recordsY + records.getHeight()) {
-      //     records.scrollTop = records.scrollTop + 8;
-      //   }
-      // }
       
       d.onDragEnter = function (e, id) {
         YAHOO.util.Dom.addClass(id, "draggingOver");
@@ -234,6 +242,7 @@ function add_draggable_for(recordId, recordName) {
         recordsX = YAHOO.util.Dom.getX("records");
         recordsY = YAHOO.util.Dom.getY("records");
         if (y < recordsY || (y > recordsY + recordsDiv.getHeight())) {
+          this.invalidDrop = true;
           return;
         }
         
@@ -282,12 +291,7 @@ function clicked(e) {
   lastClickAt = new Date().getTime();
   e.cancelBubble = true;
   if (e.stopPropagation) e.stopPropagation();
-  if (dragging) {
-    // dragging = false;
-  }
-  else {
-    select(targ.up('tr'));
-  }
+  select(targ.up('tr'));
   return false;
 }
 
@@ -332,7 +336,6 @@ function captureClick(recordId) {
 // TODO Smarter calculation of height
 // TODO Make this more effecient
 function resizeScrollingTable() {
-  // records is reserved word in IE?
   recordsDiv = $('records');
   if (recordsDiv == undefined) return;
   
