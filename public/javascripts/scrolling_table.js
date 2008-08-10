@@ -317,9 +317,9 @@ function disable_button(id) {
 }
 
 function captureClick(recordId) {
-  // row = $('team_' + recordId + '_row');
-  // row.onclick = clicked;
-  // if (row.captureEvents) row.captureEvents(Event.CLICK);
+  row = $('team_' + recordId + '_row');
+  row.onclick = clicked;
+  if (row.captureEvents) row.captureEvents(Event.CLICK);
 }
 
 // TODO Fix flash messages makes table too tall
