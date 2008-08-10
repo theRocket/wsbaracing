@@ -104,9 +104,15 @@ YAHOO.extend(ScrollingTableDDProxy, YAHOO.util.DDProxy, {
     YAHOO.util.Dom.setStyle(this.getDragEl(), 'opacity', '0.5');
     YAHOO.util.Dom.setStyle(this.getDragEl(), 'z-index', '999');
     this.showFrame(x, y);
+    this.invalidDrop = false;
+  },
+
+  onInvalidDrop: function(e) {
+    this.invalidDrop = true;
   },
 
   endDrag: function(e) {
+    if (this.invalidDrop) {
       var DOM = YAHOO.util.Dom;
       var lel = this.getEl();
       var del = this.getDragEl();
@@ -118,7 +124,8 @@ YAHOO.extend(ScrollingTableDDProxy, YAHOO.util.DDProxy, {
       top_offset = DOM.getY(del) - DOM.getY(lel);
       var dur = Math.sqrt(Math.abs(top_offset^2)+Math.abs(left_offset^2))*0.02;      
       new YAHOO.util.Motion(del, {points: { from: [DOM.getX(del), DOM.getY(del)], to: [DOM.getX(lel), DOM.getY(lel)] } }, 1, YAHOO.util.Easing.easeOut).animate();
-      new YAHOO.util.Anim(del, { opacity: { to: 0.2 }, zIndex: { to: -1 } }).animate();
+      new YAHOO.util.Anim(del, { opacity: { to: 0.2 }, zIndex: { to: -1 } }).animate();      
+    }
   }
 });
 
@@ -236,10 +243,10 @@ function add_draggable_for(recordId, recordName) {
         $(id).addClassName("disabled");
         new Effect.Opacity(id, { from: 1.0, to: 0.5, duration: 0.5 });
         new Effect.Opacity(this.getEl().id, { from: 1.0, to: 0.5, duration: 0.5 });
-        new Ajax.Request('/admin/teams/merge?target_id=' + idRegex.exec(this.getEl().id), 
+        new Ajax.Request('/admin/teams/merge?target_id=' + idRegex.exec(id), 
                          { asynchronous:true, 
                            evalScripts:true, 
-                           parameters:'id=' + encodeURIComponent(idRegex.exec(id))
+                           parameters:'id=' + encodeURIComponent(idRegex.exec(this.getEl().id))
                           }
                          );
 

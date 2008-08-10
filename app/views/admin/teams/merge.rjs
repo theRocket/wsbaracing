@@ -5,5 +5,5 @@ page.replace_html('notice', "Merged #{@merged_team_name} into #{@existing_team.n
 page.show('notice')
 page.call("YAHOO.util.DragDropMgr.unlock")
 page.call(:restripeTable)
-page << "$('team_#{@existing_team.id}').removeClassName('disabled');"
+page << "$('team_#{@existing_team.id}_row').removeClassName('disabled');"
 page.visual_effect(:opacity, "team_#{@existing_team.id}_row", :from => 0.5, :to => 1.0)

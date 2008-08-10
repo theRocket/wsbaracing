@@ -72,7 +72,7 @@
   background-color: #E9F79B;
 }
 
-.scrolling_table tr.disabled {
+.scrolling_table tr.disabled td.record {
   background-image: url(/images/icons/spinner.gif);
 }
 
