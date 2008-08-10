@@ -255,6 +255,10 @@ function add_draggable_for(recordId, recordName) {
 }
 
 function clicked(e) {
+  if (YAHOO.util.DragDropMgr.locked) {
+    return true;
+  }
+  
   if (!e) var e = window.event
   
   if (e.target) targ = e.target;
