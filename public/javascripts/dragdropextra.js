@@ -62,6 +62,7 @@ Draggable.prototype.startDrag = function(event) {
 			this.originalScrollTop = (Element.getHeight(this._clone)/2);
 
 			this.draw(pointer);
+			me.top = me.top + this.options.scroll.scrollTop;
 			me.show();
 		}
 
@@ -87,7 +88,7 @@ Draggable.prototype.draw = function(point) {
 	  if(this.options.ghosting) {
 	    var r   = Position.realOffset(this.element);
 	    pos[0] += r[0] - Position.deltaX; 
-		pos[1] += r[1] - Position.deltaY;
+		  pos[1] += r[1] - Position.deltaY;
 	  }
   
 	  var d = this.currentDelta();
@@ -117,7 +118,7 @@ Draggable.prototype.draw = function(point) {
         }}
 
   	if (this.options.superghosting)	{	
-		p[1] = point[1] - this.originalScrollTop;
+    p[1] = point[1];
 	}
 
 

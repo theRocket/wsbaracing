@@ -3,7 +3,7 @@
                                         '/admin/teams/edit_name/<%= team.id %>', 
                                         { asynchronous:false, 
                                           evalScripts:true, 
-                                          onComplete: function(transport) { $('team_<%= team.id %>_name_text_field').select(); YAHOO.util.DragDropMgr.lock(); }
+                                          onComplete: function(transport) {$('team_<%= team.id %>_name_text_field').select() }
                                         }); 
                                         return false;"><%= 
   if team.name.blank?

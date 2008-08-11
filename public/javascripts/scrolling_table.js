@@ -1,273 +1,50 @@
 // Issues:
+// Draggable jumps oddly when scrolling (FF, S, IE?)
+// Hover coordinates incorrect after scroll? (all)
 // Droppables still accept drop, even when scrolled out of view? (all)
 
 lastClickAt = 0;
 selectedId = null;
 idRegex = /\d+/;
-// TODO replace global variable with better event handling. Is this hiding a scriptalicous variable?
+// TODO replace global variable with better event handling
 dragging = false;
 
 // TODO Disabled Draggable and update UI as well as Droppable?
 // TODO Ensure Drag and drops are recreated afterwards
 // TODO Ensure everything (dragging, editing) is really disabled after drop
-// Move DOM-ready to one method that encapsulates all of this behavior
-// TODO Scroll to bottom of merge? message
-// TODO invalid drop doesn't do revert animation in big lists with overflow
+function add_droppable_row_for(record_id) {
+  Droppables.add('team_' + record_id + '_name', 
+                 { hoverclass:'hovering', 
+                   onDrop:function(element) {
+                     // console.log(element.cumulativeOffset());
+                     // console.log(element.getDimensions());
+                     // console.log(element.getOffsetParent());
+                     // console.log(element.viewportOffset());
+                     // Droppables.remove('team_' + record_id + '_row');
+                     // $('team_' + record_id).addClassName("disabled");
+                     // new Effect.Opacity('team_' + record_id + '_row', { from: 1.0, to: 0.5, duration: 0.5 });
+                     // new Ajax.Request('/admin/teams/merge?target_id=' + record_id, 
+                     //                  { asynchronous:true, 
+                     //                    evalScripts:true, 
+                     //                    parameters:'id=' + encodeURIComponent(idRegex.exec(element.id))
+                     //                   }
+                     //                  );
+                     }})  
+}
 
-ScrollingTableDDProxy = function(id, recordName, config) {
-  this.recordName = recordName;
-  ScrollingTableDDProxy.superclass.constructor.call(this, id, "default", config);
-};
-
-YAHOO.extend(ScrollingTableDDProxy, YAHOO.util.DDProxy, {
-  labelText: "",
-  scroll: true,
-  
-  createFrame: function() {
-    var self=this, body=document.body;
-
-    if (!body || !body.firstChild) {
-        setTimeout( function() { self.createFrame(); }, 50 );
-        return;
-    }
-
-    var div=this.getDragEl(), Dom=YAHOO.util.Dom;
-
-    if (!div) {
-        div    = document.createElement("div");
-        div.id = this.dragElId;
-
-        var s  = div.style;
-        s.position   = "absolute";
-        s.visibility = "hidden";
-        s.cursor     = "default";
-        s.zIndex     = 999;
-        s.height     = "auto";
-        s.width      = "auto";
-        s.minWidth  = "200px";
-        s.minHeight   = "20px";
-        s.backgroundImage = "url(/images/icons/people.gif)";
-        s.backgroundRepeat = "no-repeat";
-        s.backgroundPosition = "4px 2px";
-        s.paddingLeft = "32px";
-        s.fontFamily = this.getEl().style.fontFamily;
-        s.fontSize = this.getEl().style.fontSize;
-        // Dom.setStyle should work cross-browser.
-        Dom.setStyle(div, 'opacity', '0.5');
-
-        var _data = document.createElement('div');
-        Dom.setStyle(_data, 'height', '100%');
-        Dom.setStyle(_data, 'width', '100%');
-        /**
-        * If the proxy element has no background-color, then it is considered to the "transparent" by Internet Explorer.
-        * Since it is "transparent" then the events pass through it to the iframe below.
-        * So creating a "fake" div inside the proxy element and giving it a background-color, then setting it to an
-        * opacity of 0, it appears to not be there, however IE still thinks that it is so the events never pass through.
-        */
-        Dom.setStyle(_data, 'background-color', '#ccc');
-        Dom.setStyle(_data, 'opacity', '0');
-        div.appendChild(_data);
-
-        /**
-        * It seems that IE will fire the mouseup event if you pass a proxy element over a select box
-        * Placing the IFRAME element inside seems to stop this issue
-        */
-        if (YAHOO.env.ua.ie) {
-            //Only needed for Internet Explorer
-            var ifr = document.createElement('iframe');
-            ifr.setAttribute('src', 'about:blank');
-            ifr.setAttribute('scrolling', 'no');
-            ifr.setAttribute('frameborder', '0');
-            div.insertBefore(ifr, div.firstChild);
-            Dom.setStyle(ifr, 'height', '100%');
-            Dom.setStyle(ifr, 'width', '100%');
-            Dom.setStyle(ifr, 'position', 'absolute');
-            Dom.setStyle(ifr, 'top', '0');
-            Dom.setStyle(ifr, 'left', '0');
-            Dom.setStyle(ifr, 'opacity', '0');
-            Dom.setStyle(ifr, 'zIndex', '-1');
-            Dom.setStyle(ifr.nextSibling, 'zIndex', '2');
-        }
-
-        // IE is happiest if this occurs later rather than earlier
-        div.innerHTML = this.recordName;
-
-        // appendChild can blow up IE if invoked prior to the window load event
-        // while rendering a table.  It is possible there are other scenarios 
-        // that would cause this to happen as well.
-        body.insertBefore(div, body.firstChild);
-    }
-  },
-  
-  b4StartDrag: function(x, y) {
-    // Reset in case reused
-    YAHOO.util.Dom.setStyle(this.getDragEl(), 'opacity', '0.5');
-    YAHOO.util.Dom.setStyle(this.getDragEl(), 'z-index', '999');
-    this.showFrame(x, y);
-    this.invalidDrop = false;
-  },
-
-  onInvalidDrop: function(e) {
-    this.invalidDrop = true;
-  },
-
-  endDrag: function(e) {
-    if (this.invalidDrop) {
-      var DOM = YAHOO.util.Dom;
-      var lel = this.getEl();
-      var del = this.getDragEl();
-      
-      // Show the drag frame briefly so we can get its position
-      DOM.setStyle(del, "visibility", ""); 
-
-      left_offset = DOM.getX(del) - DOM.getX(lel);
-      top_offset = DOM.getY(del) - DOM.getY(lel);
-      var dur = Math.sqrt(Math.abs(top_offset^2)+Math.abs(left_offset^2))*0.02;      
-      new YAHOO.util.Motion(del, {points: { from: [DOM.getX(del), DOM.getY(del)], to: [DOM.getX(lel), DOM.getY(lel)] } }, 1, YAHOO.util.Easing.easeOut).animate();
-      new YAHOO.util.Anim(del, { opacity: { to: 0.2 }, zIndex: { to: -1 } }).animate();      
-    }
-  },
-  
-  // onDrag: function(e) {
-  //   var x = YAHOO.util.Dom.getX(this.getDragEl());
-  //   var y = YAHOO.util.Dom.getY(this.getDragEl());
-  //   var records = YAHOO.util.Dom.get("records");
-  //   var recordsX = YAHOO.util.Dom.getX(records);
-  //   var recordsY = YAHOO.util.Dom.getY(records);
-  //   if ((y >= recordsY - 12) && (y < recordsY + 12)) {
-  //     this.scrollSpeedY = -1;
-  //     this.scrollInterval = setInterval(this.scrollRecords.bind(this), 20);
-  //   } 
-  //   else if ((y > (recordsY + records.getHeight() - 12)) && (y <= (recordsY + records.getHeight() + 12))) {
-  //     this.scrollSpeedY = 1;
-  //     this.scrollInterval = setInterval(this.scrollRecords.bind(this), 20);
-  //   } 
-  //   else {
-  //     if (this.scrollInterval) {
-  //       this.scrollSpeedY = 0;
-  //       clearInterval(this.scrollInterval);
-  //       this.scrollInterval = null;
-  //     }
-  //   }
-  // },
-  
-  autoScroll: function(x, y, h, w) {
-
-      if (this.scroll) {
-        var records = YAHOO.util.Dom.get("records");
-          // The client height
-          var clientH = records.getHeight();
-
-          // The client width
-          var clientW = this.DDM.getClientWidth();
-
-          // The amt scrolled down
-          var st = this.DDM.getScrollTop();
-
-          // The amt scrolled right
-          var sl = this.DDM.getScrollLeft();
-
-          // Location of the bottom of the element
-          var bot = h + y;
-
-          // Location of the right of the element
-          var right = w + x;
-
-          // The distance from the cursor to the bottom of the visible area, 
-          // adjusted so that we don't scroll if the cursor is beyond the
-          // element drag constraints
-          var toBot = (clientH + st - y - this.deltaY);
-
-          // The distance from the cursor to the right of the visible area
-          var toRight = (clientW + sl - x - this.deltaX);
-
-
-          // How close to the edge the cursor must be before we scroll
-          // var thresh = (document.all) ? 100 : 40;
-          var thresh = 40;
-
-          // How many pixels to scroll per autoscroll op.  This helps to reduce 
-          // clunky scrolling. IE is more sensitive about this ... it needs this 
-          // value to be higher.
-          var scrAmt = (document.all) ? 80 : 30;
-
-          // Scroll down if we are near the bottom of the visible page and the 
-          // obj extends below the crease
-          // console.log(bot + ' ' + clientH +  ' ' + toBot + ' ' + thresh);
-          if ( bot > clientH && toBot < thresh ) { 
-            console.log("scroll");
-              records.scrollTo(sl, st + scrAmt); 
-          }
-
-          // Scroll up if the window is scrolled down and the top of the object
-          // goes above the top border
-          if ( y < st && st > 0 && y - st < thresh ) { 
-              records.scrollTo(sl, st - scrAmt); 
-          }
-
-          // Scroll right if the obj is beyond the right border and the cursor is
-          // near the border.
-          if ( right > clientW && toRight < thresh ) { 
-              records.scrollTo(sl + scrAmt, st); 
-          }
-
-          // Scroll left if the window has been scrolled to the right and the obj
-          // extends past the left border
-          if ( x < sl && sl > 0 && x - sl < thresh ) { 
-              records.scrollTo(sl - scrAmt, st);
-          }
-      }
-  },
-});
-
-function add_draggable_for(recordId, recordName) {
-    YAHOO.util.Event.onDOMReady(function() { 
-      d = new ScrollingTableDDProxy('team_' + recordId + '_row', recordName, { 
-        dragElId: 'team_' + recordId + '_row-proxy',
-        resizeFrame: false
-      });
-      
-      
-      d.onDragEnter = function (e, id) {
-        YAHOO.util.Dom.addClass(id, "draggingOver");
-      }
-      
-      d.onDragOut = function (e, id) {
-        YAHOO.util.Dom.removeClass(id, "draggingOver");
-      }
-  
-      d.onDragDrop = function(e, id) {
-        x = YAHOO.util.Event.getPageX(e);
-        y = YAHOO.util.Event.getPageY(e);
-        recordsX = YAHOO.util.Dom.getX("records");
-        recordsY = YAHOO.util.Dom.getY("records");
-        if (y < recordsY || (y > recordsY + recordsDiv.getHeight())) {
-          this.invalidDrop = true;
-          return;
-        }
-        
-        YAHOO.util.DragDropMgr.lock();
-        YAHOO.util.Dom.removeClass(id, "draggingOver");
-        
-        $(id).addClassName("disabled");
-        new Effect.Opacity(id, { from: 1.0, to: 0.5, duration: 0.5 });
-        new Effect.Opacity(this.getEl().id, { from: 1.0, to: 0.5, duration: 0.5 });
-        new Ajax.Request('/admin/teams/merge?target_id=' + idRegex.exec(id), 
-                         { asynchronous:true, 
-                           evalScripts:true, 
-                           parameters:'id=' + encodeURIComponent(idRegex.exec(this.getEl().id))
-                          }
-                         );
-
-      }
-    });
+function add_draggable_for(record_id) {
+  new Draggable('team_' + record_id + '_name', { delay:100,
+                                       scroll: $('records'),
+                                       // ghosting: !Prototype.Browser.IE,
+                                       superghosting: true,
+                                       revert: true,
+                                       onEnd:function() { add_droppable_row_for(record_id); },
+                                       onStart:function() { Droppables.remove('team_' + record_id + '_name'); dragging = true;}
+                                     }
+                );
 }
 
 function clicked(e) {
-  if (YAHOO.util.DragDropMgr.locked) {
-    return true;
-  }
-  
   if (!e) var e = window.event
   
   if (e.target) targ = e.target;
@@ -291,7 +68,12 @@ function clicked(e) {
   lastClickAt = new Date().getTime();
   e.cancelBubble = true;
   if (e.stopPropagation) e.stopPropagation();
-  select(targ.up('tr'));
+  if (dragging) {
+    // dragging = false;
+  }
+  else {
+    select(targ.up('tr'));
+  }
   return false;
 }
 
@@ -324,30 +106,23 @@ function disable_button(id) {
   }
 }
 
-function captureClick(recordId) {
-  row = $('team_' + recordId + '_row');
+function captureClick(record_id) {
+  row = $('team_' + record_id + '_row');
   row.onclick = clicked;
   if (row.captureEvents) row.captureEvents(Event.CLICK);
 }
 
 // TODO Fix flash messages makes table too tall
 // TODO Throws JavaScript error in IE
-// TODO Use attached event handler or something
-// TODO Smarter calculation of height
-// TODO Make this more effecient
-function resizeScrollingTable() {
-  recordsDiv = $('records');
-  if (recordsDiv == undefined) return;
-  
-  viewportHeight = YAHOO.util.Dom.getViewportHeight();
-  if (viewportHeight < 100) {
-    recordsDiv.setStyle({ height: 'auto' });
-  }
-  else {
-    newHeight = viewportHeight - 276;
-    if (newHeight < 50) newHeight = 50;
-    recordsDiv.setStyle({ height: newHeight + 'px' });
-  }
+function resize() {
+  // if (window.innerHeight < 100) {
+  //   $("teams").setStyle({ height: 'auto' });
+  // }
+  // else {
+  //   var newHeight = window.innerHeight - 260;
+  //   if (newHeight < 50) newHeight = 50;
+  //   $("rows").setStyle({ height: newHeight + 'px' });
+  // }
 }
 
 function deleteTeam() {

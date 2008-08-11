@@ -54,7 +54,8 @@
 <script type="text/javascript" charset="utf-8">
 <%- for team in @teams -%>
   captureClick(<%= team.id %>);  
-  add_draggable_for(<%= team.id %>, "<%= team.name %>");
+  add_droppable_row_for(<%= team.id %>);
+  add_draggable_for(<%= team.id %>);
 <%- end -%>
 </script>
 

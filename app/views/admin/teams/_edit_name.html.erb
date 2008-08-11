@@ -5,7 +5,6 @@
           :id => "team_#{@team.id}_name_text_field" %><%= 
         link_to_remote image_tag('/images/buttons/small_cancel.gif', :class => "cancel", :title => "Cancel editing"), 
           { :update => "team_#{@team.id}", 
-            :complete => "YAHOO.util.DragDropMgr.unlock();",
             :url => { :action => "cancel_edit_name", :id => @team.to_param} },
           { :class => "cancel" } %>
   </div>

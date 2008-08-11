@@ -68,11 +68,12 @@
   background-color: #D0FA30;
 }
 
-.scrolling_table tr.draggingOver {
-  background-color: #E9F79B;
+.scrolling_table div.hovering {
+/*  background-color: #E9F79B;*/
+  border: 2px solid #D0FA30;
 }
 
-.scrolling_table tr.disabled td.record {
+.scrolling_table tr.disabled {
   background-image: url(/images/icons/spinner.gif);
 }
 
@@ -88,7 +89,8 @@
 
 div.records {
   z-index: 2;
-  height: 200px;
+  height: 251px;
+  overflow: auto;
   overflow-x: hidden;
   overflow-y: scroll;
   font-size: 11px;
