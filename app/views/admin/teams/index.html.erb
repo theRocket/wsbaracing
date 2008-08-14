@@ -1,58 +1,13 @@
 <% @page_title = 'Admin: Teams' %>
 
-<%= form_tag({}, {:method => 'get', :id => 'search_form'}) %>
-  <div class="search">
-    <label for="name">Name:</label>
-    <%= text_field_tag 'name', @name, :size => 30 %>
-  </div>
-</form>
-
+<%= render :partial => "shared/search_form", :locals => { :name => @name } %>
 <%= render :partial => "shared/flash", :locals => { :flash => flash } %>
 
-<div class="scrolling_table">
-  <!--This is a super hack job to get the table header to remain fixed, the columns to stay lined up, and the scrollbar to be covered up on the header-->
-  <div class="headers">
-    <table cellspacing="0">
-      <thead>
-        <tr>
-          <th class="record">Name</th>
-          <th class="aliases">Aliases</th>
-          <th class="member">Member</th>
-        </tr>
-      </thead>
-    </table>
-  </div>
-  <div class="scroll_bar_cover_container">
-    <div class="scroll_bar_cover_up"></div>
-  </div>
-  <!--END hack job-->
-
-  <div class="records" id="records">
-    <table cellspacing="0">
-    <tbody>
-      <%= render :partial => "team", :collection => @teams %>
-    </tbody>
-    </table>
-  </div>
-</div>
-
-<div class="buttons last">
-  <div style="float: left;">
-    <button type="button"
-            name="new" id="new_button" value="+" class="new disabled">&nbsp;</button><button 
-               type="button" name="delete" id="delete_button" value="&ndash;" class="delete disabled" 
-               onclick="delete('team')">&nbsp;</button>
-  </div>
-  <div style="float: right;">
-    <button type="button" name="results" id="results_button" class="disabled" value="Results" 
-            onClick="redirectToResults()">Results</button><button 
-      type="button" name="edit" id="edit_button" class="disabled" value="Edit"
-      onClick="redirectToEdit('team')">Edit</button>
-  </div>
-</div>
-
-<script type="text/javascript" charset="utf-8">
-  add_javascript_for('team', [<%= @teams.map { |team| team.id }.join(",") %>]);
-</script>
+<%= scrolling_table :teams, [
+                                { :title => "Name", :styleClass => "name"},
+                                { :title => "Aliases", :styleClass => "aliases"},
+                                { :title => "Member", :styleClass => "member"}
+                              ]
+%>
 
 <%= focus("name") %>

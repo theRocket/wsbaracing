@@ -1,0 +1,6 @@
+<%= form_tag({}, {:method => 'get', :id => 'search_form'}) %>
+  <div class="search">
+    <label for="name">Name:</label>
+    <%= text_field_tag 'name', @name, :size => 30 %>
+  </div>
+</form>
