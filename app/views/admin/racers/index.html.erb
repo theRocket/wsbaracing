@@ -3,16 +3,16 @@
 <%= render :partial => "shared/search_form", :locals => { :name => @name } %>
 <%= render :partial => "shared/flash", :locals => { :flash => flash } %>
 
-<%= scrolling_table :racers, [
-                                { :title => "Name", :styleClass => "name"},
-                                { :title => "Team", :styleClass => "team_name"},
-                                { :title => "Aliases", :styleClass => "aliases"},
-                                { :title => "Road", :styleClass => "right"},
-                                { :title => "MTB", :styleClass => "right"},
-                                { :title => "DH", :styleClass => "right"},
-                                { :title => "Cross", :styleClass => "right"},
-                                { :title => "Member", :styleClass => "member"}
-                              ]
+<%= scrolling_table do |t|
+      t.column "Name"
+      t.column "Team"
+      t.column "Aliases"
+      t.column "Road"
+      t.column "MTB"
+      t.column "DH"
+      t.column "Cross"
+      t.column "Member"
+    end
 %>
 
 <table style="width: 100%;">

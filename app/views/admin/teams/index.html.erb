@@ -3,11 +3,11 @@
 <%= render :partial => "shared/search_form", :locals => { :name => @name } %>
 <%= render :partial => "shared/flash", :locals => { :flash => flash } %>
 
-<%= scrolling_table :teams, [
-                                { :title => "Name", :styleClass => "name"},
-                                { :title => "Aliases", :styleClass => "aliases"},
-                                { :title => "Member", :styleClass => "member"}
-                              ]
+<%= scrolling_table do |t|
+      t.column "Name"
+      t.column "Aliases"
+      t.column "Member"
+    end
 %>
 
 <%= focus("name") %>

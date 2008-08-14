@@ -5,7 +5,7 @@
       <thead>
         <tr>
           <% columns.each do |column| -%>
-          <th class="<%= column[:styleClass] %>"><%= column[:title] %></th>
+          <th class="<%= column.style_class %>"><%= column.title %></th>
           <%- end %>
         </tr>
       </thead>

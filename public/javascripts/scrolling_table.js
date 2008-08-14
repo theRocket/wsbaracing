@@ -5,7 +5,7 @@
 lastClickAt = 0;
 selectedId = null;
 idRegex = /\d+/;
-// TODO replace global variable with better event handling
+// TODO replace global variable with better event handling. Current code breaks selection.
 dragging = false;
 
 function add_javascript_for(record_type, record_ids) {
