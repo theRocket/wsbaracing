@@ -1,86 +1,73 @@
 <% @page_title = 'Admin: Racers' %>
 
 <%= form_tag({}, {:method => 'get', :id => 'search_form'}) %>
-  <table style="margin-top: 16px; margin-bottom: 16px">
-    <tr>
-      <td class="field_label">Name:</td>
-      <td><%= text_field_tag 'name', @name, :size => 30 %></td>
-    </tr>
-  </table>
+  <div class="search">
+    <label for="name">Name:</label>
+    <%= text_field_tag 'name', @name, :size => 30 %>
+  </div>
 </form>
 
-<p class="message" id="notice" <%= "style='display: none;'" unless flash[:notice] %>><%= flash[:notice] %></p>
-<p class="message" id="warn" <%= "style='display: none;'" unless flash[:warn] %>><%= flash[:warn] %></p>
+<%= render :partial => "shared/flash", :locals => { :flash => flash } %>
 
-<table style="position: relative;">
-  <tr style="position: relative;">
-    <td style="position: relative;">
-      <table class="base" id="racers" style="position: relative;">
+<div class="scrolling_table">
+  <!--This is a super hack job to get the table header to remain fixed, the columns to stay lined up, and the scrollbar to be covered up on the header-->
+  <div class="headers">
+    <table cellspacing="0">
+      <thead>
         <tr>
-          <th class="name">Name</th>
-          <th class="team">Team</th>
+          <th class="record">Name</th>
+          <th class="team_name">Team</th>
           <th class="aliases">Aliases</th>
           <th class="right">Road</th>
           <th class="right">MTB</th>
           <th class="right">DH</th>
           <th class="right">Cross</th>
-          <th class="center">Member</th>
-          <th></th>
-          <th></th>
+          <th class="member">Member</th>
         </tr>
-        <%= render :partial => "racer", :collection => @racers %>
-        <% if @racers.empty? %>
-        <tr valign="top">
-          <%- if @name.blank? -%>
-          <td colspan="10" width="200" class="not_found">Enter part of a racer's name</td>
-          <%- else -%>
-          <td colspan="10" width="200" class="not_found">No racers found</td>
-          <%- end -%>
-        </tr>
-        <% end %>
-      </table>
-      
-      <table style="width: 100%;">
-        <tr>
-          <td><%= link_to(image_tag('/images/buttons/add.gif'), { :action => 'new' }, { :class => "image" }) %></td>
-          <td style="text-align: right; padding-top: 8px;"><%= link_to('Print Cards', :action => 'cards') %> |
-              <%= link_to('Print Mailing Labels', :action => 'mailing_labels') %>
-          </td>
-        </tr>
-      </table>
+      </thead>
+    </table>
+  </div>
+  <div class="scroll_bar_cover_container">
+    <div class="scroll_bar_cover_up"></div>
+  </div>
+  <!--END hack job-->
 
-      <%= render :partial => 'import_export' %>
+  <div class="records" id="records">
+    <table cellspacing="0">
+    <tbody>
+      <%= render :partial => "racer", :collection => @racers %>
+    </tbody>
+    </table>
+  </div>
+</div>
 
+<div class="buttons last">
+  <div style="float: left;">
+    <button type="button"
+            name="new" id="new_button" value="+" class="new disabled">&nbsp;</button><button 
+               type="button" name="delete" id="delete_button" value="&ndash;" class="delete disabled" 
+               onclick="deleteRacer('team')">&nbsp;</button>
+  </div>
+  <div style="float: right;">
+    <button type="button" name="results" id="results_button" class="disabled" value="Results" 
+            onClick="redirectToResults()">Results</button><button 
+      type="button" name="edit" id="edit_button" class="disabled" value="Edit"
+      onClick="redirectToEdit('team')">Edit</button>
+  </div>
+</div>
+
+<table style="width: 100%;">
+  <tr>
+    <td style="text-align: right; padding-top: 8px;"><%= link_to('Print Cards', :action => 'cards') %> |
+        <%= link_to('Print Mailing Labels', :action => 'mailing_labels') %>
     </td>
   </tr>
 </table>
 
-<% focus('name') %>
-
-<%- for racer in @racers -%>
-  <%= draggable_element("racer_#{racer.id}", :revert => true, :delay => 100,
-                        :onStart => "function() { Droppables.remove('racer_#{racer.id}_row') }", 
-                        :onEnd => "function() { Droppables.add('racer_#{racer.id}_row', {hoverclass:'hovering', onDrop:function(element){new Ajax.Request('/admin/racers/merge?target_id=#{racer.id}', {asynchronous:true, evalScripts:true, parameters:'id=' + encodeURIComponent(element.id)})}})}")
-  %>
-  <%= drop_receiving_element("racer_#{racer.id}_row", 
-    :url => { :action => "merge", :target_id => racer.id },
-    :onDrop => "function(element){$('racer_#{racer.id}').src='/images/icons/spinner.gif'; new Ajax.Request('/admin/racers/merge?target_id=#{racer.id}', {asynchronous:true, evalScripts:true, parameters:'id=' + encodeURIComponent(element.id)});Droppables.remove('racer_#{racer.id}_row') }",
-    :hoverclass => 'hovering' ) %>
-<%- end -%>
+<%= render :partial => 'import_export' %>
 
 <script type="text/javascript" charset="utf-8">
-  function restripeTable() {
-    index = 0;
-    $A($('racers').rows).each(function(row) {
-      if (row.className == 'even' || row.className == 'odd') {
-        if (index % 2 == 0) {
-          row.className = 'even';
-        }
-        else {
-          row.className = 'odd';
-        }
-        index = index + 1;
-      }
-    });
-  }
+  document.observe("dom:loaded", function() {
+    add_javascript_for('racer', [<%= @racers.map { |racer| racer.id }.join(",") %>]);
+  });
 </script>

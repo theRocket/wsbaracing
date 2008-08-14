@@ -1,18 +1,18 @@
-<div class="name" id="team_<%= team.id %>_name">
-  <a href="#" onclick="new Ajax.Updater('team_<%= team.id %>', 
-                                        '/admin/teams/edit_name/<%= team.id %>', 
+<div class="name" id="racer_<%= racer.id %>_name">
+  <a href="#" onclick="new Ajax.Updater('racer_<%= racer.id %>', 
+                                        '/admin/racers/edit_name/<%= racer.id %>', 
                                         { asynchronous:false, 
                                           evalScripts:true, 
                                           onComplete: function(transport) {
-                                            disableDragAndDrop('team', <%= team.id %>);
-                                            $('team_<%= team.id %>_name_text_field').select();
+                                            disableDragAndDrop('racer', <%= racer.id %>);
+                                            $('racer_<%= racer.id %>_name_text_field').select();
                                           }
                                         }); 
                                         return false;"><%= 
-  if team.name.blank?
+  if racer.name.blank?
     '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
   else
-    team.name 
+    racer.name 
   end
 %></a>
 </div>

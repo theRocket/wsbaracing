@@ -41,22 +41,18 @@
     <button type="button"
             name="new" id="new_button" value="+" class="new disabled">&nbsp;</button><button 
                type="button" name="delete" id="delete_button" value="&ndash;" class="delete disabled" 
-               onclick="deleteTeam()">&nbsp;</button>
+               onclick="delete('team')">&nbsp;</button>
   </div>
   <div style="float: right;">
     <button type="button" name="results" id="results_button" class="disabled" value="Results" 
             onClick="redirectToResults()">Results</button><button 
       type="button" name="edit" id="edit_button" class="disabled" value="Edit"
-      onClick="redirectToEdit()">Edit</button>
+      onClick="redirectToEdit('team')">Edit</button>
   </div>
 </div>
 
 <script type="text/javascript" charset="utf-8">
-<%- for team in @teams -%>
-  captureClick(<%= team.id %>);  
-  add_droppable_row_for(<%= team.id %>);
-  add_draggable_for(<%= team.id %>);
-<%- end -%>
+  add_javascript_for('team', [<%= @teams.map { |team| team.id }.join(",") %>]);
 </script>
 
 <%= focus("name") %>

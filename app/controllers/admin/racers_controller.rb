@@ -135,7 +135,7 @@ class Admin::RacersController < Admin::RecordEditor
   # Inline edit
   def edit_name
     @racer = Racer.find(params[:id])
-    render(:partial => 'edit')
+    render(:partial => 'edit_name')
   end
 
   # Inline edit
