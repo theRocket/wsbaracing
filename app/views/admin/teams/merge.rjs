@@ -3,7 +3,8 @@ page.replace_html "team_#{@existing_team.id}_aliases", render(:partial => 'alias
 page.hide('warn')
 page.replace_html('notice', "Merged #{@merged_team_name} into #{@existing_team.name}")
 page.show('notice')
+page.call(:add_draggable_for, @existing_team.id)
 page.call(:add_droppable_row_for, @existing_team.id)
 page.call(:restripeTable)
-page << "$('team_#{@existing_team.id}').removeClassName('disabled');"
+page << "$('team_#{@existing_team.id}_row').removeClassName('disabled');"
 page.visual_effect(:opacity, "team_#{@existing_team.id}_row", :from => 0.5, :to => 1.0)

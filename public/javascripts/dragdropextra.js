@@ -2,13 +2,13 @@
 //  (c) 2007-2008 Christopher Williams, Iterative Designs
 //
 // v0.3 release
-//	  - Fixed bug found by Phillip Sauerbeck psauerbeck@gmail. Tests added based on Phillip's efforts.
+//    - Fixed bug found by Phillip Sauerbeck psauerbeck@gmail. Tests added based on Phillip's efforts.
 // v0.2 release
-//		- Minor bug fix for the releasing of objects after they have been dropped, prevents memory leak.
+//    - Minor bug fix for the releasing of objects after they have been dropped, prevents memory leak.
 // v0.1 release
-//		- initial release for the super ghosting capability
-//		- Drags from one scrolling list to the other (overflow:auto)
-//		- Retains the original object so that it can remain present despite being dragged
+//    - initial release for the super ghosting capability
+//    - Drags from one scrolling list to the other (overflow:auto)
+//    - Retains the original object so that it can remain present despite being dragged
 // 
 // dragdropextra.js is freely distributable under the terms of an MIT-style license.
 // For details, see the Iterative Designs web site: http://www.iterativedesigns.com/
@@ -37,45 +37,45 @@ Draggable.prototype.startDrag = function(event) {
       this.element.parentNode.insertBefore(this._clone, this.element);
     }
 
-	
+  
     if(this.options.superghosting) {
-			Position.prepare();
-			var pointer = [Event.pointerX(event), Event.pointerY(event)];
-			body = document.getElementsByTagName("body")[0];
-			me = this.element;
-			this._clone = me.cloneNode(true);
+      Position.prepare();
+      var pointer = [Event.pointerX(event), Event.pointerY(event)];
+      body = document.getElementsByTagName("body")[0];
+      me = this.element;
+      this._clone = me.cloneNode(true);
 
-			me.parentNode.insertBefore(this._clone, me);
-			me.id = "clone_"+me.id;
-			me.hide();
+      me.parentNode.insertBefore(this._clone, me);
+      me.id = "clone_"+me.id;
+      me.hide();
 
-			Position.absolutize(me);
-			me.parentNode.removeChild(me);
-			body.appendChild(me);
-			//Retain height and width of object only if it has been nulled out.  -v0.3 Fix
-			if (me.style.width == "0px" || me.style.height == "0px")	{
-				me.style.width=Element.getWidth(this._clone)+"px";
-				me.style.height=Element.getHeight(this._clone)+"px";
-			}
+      Position.absolutize(me);
+      me.parentNode.removeChild(me);
+      body.appendChild(me);
+      //Retain height and width of object only if it has been nulled out.  -v0.3 Fix
+      if (me.style.width == "0px" || me.style.height == "0px")  {
+        me.style.width=Element.getWidth(this._clone)+"px";
+        me.style.height=Element.getHeight(this._clone)+"px";
+      }
 
-			//overloading in order to reduce repeated code weight.
-			this.originalScrollTop = (Element.getHeight(this._clone)/2);
+      //overloading in order to reduce repeated code weight.
+      this.originalScrollTop = (Element.getHeight(this._clone)/2);
 
-			this.draw(pointer);
-			me.top = me.top + this.options.scroll.scrollTop;
-			me.show();
-		}
+      this.draw(pointer);
+      me.top = me.top + this.options.scroll.scrollTop;
+      me.show();
+    }
 
-		if(this.options.scroll) {
-		  if (this.options.scroll == window) {
-		    var where = this._getWindowScroll(this.options.scroll);
-		    this.originalScrollLeft = where.left;
-		    this.originalScrollTop = where.top;
-		  } else {
-		    this.originalScrollLeft = this.options.scroll.scrollLeft;
-		    this.originalScrollTop = this.options.scroll.scrollTop;
-		  }
-		}
+    if(this.options.scroll) {
+      if (this.options.scroll == window) {
+        var where = this._getWindowScroll(this.options.scroll);
+        this.originalScrollLeft = where.left;
+        this.originalScrollTop = where.top;
+      } else {
+        this.originalScrollLeft = this.options.scroll.scrollLeft;
+        this.originalScrollTop = this.options.scroll.scrollTop;
+      }
+    }
     
     Draggables.notify('onStart', this, event);
         
@@ -84,58 +84,56 @@ Draggable.prototype.startDrag = function(event) {
 
 
 Draggable.prototype.draw = function(point) {
-	  var pos = Position.cumulativeOffset(this.element);
-	  if(this.options.ghosting) {
-	    var r   = Position.realOffset(this.element);
-	    pos[0] += r[0] - Position.deltaX; 
-		  pos[1] += r[1] - Position.deltaY;
-	  }
+  var pos = Position.cumulativeOffset(this.element);
+  // if(this.options.ghosting) {
+  //   var r   = Position.realOffset(this.element);
+  //   pos[0] += r[0] - Position.deltaX; 
+  //   pos[1] += r[1] - Position.deltaY;
+  // }
+  // 
+  var d = this.currentDelta();
+  pos[0] -= d[0]; 
+  pos[1] -= d[1];
   
-	  var d = this.currentDelta();
-	  pos[0] -= d[0]; 
-	  pos[1] -= d[1];
+  if(this.options.scroll && (this.options.scroll != window && this._isScrollChild)) {
+    pos[0] -= this.options.scroll.scrollLeft-this.originalScrollLeft;
+    pos[1] -= this.options.scroll.scrollTop-this.originalScrollTop;
+  }
   
-	  if(this.options.scroll && (this.options.scroll != window && this._isScrollChild)) {
-	    pos[0] -= this.options.scroll.scrollLeft-this.originalScrollLeft;
-	    pos[1] -= this.options.scroll.scrollTop-this.originalScrollTop;
-	  }
+  var p = [0,1].map(function(i){ 
+    return (point[i]-pos[i]-this.offset[i]) 
+  }.bind(this));
   
-	  var p = [0,1].map(function(i){ 
-	    return (point[i]-pos[i]-this.offset[i]) 
-	  }.bind(this));
-
-        if(this.options.snap) {
-          if(Object.isFunction(this.options.snap)) {
-            p = this.options.snap(p[0],p[1],this);
-          } else {
-          if(Object.isArray(this.options.snap)) {
-            p = p.map( function(v, i) {
-              return (v/this.options.snap[i]).round()*this.options.snap[i] }.bind(this))
-          } else {
-            p = p.map( function(v) {
-              return (v/this.options.snap).round()*this.options.snap }.bind(this))
-          }
-        }}
-
-  	if (this.options.superghosting)	{	
-    p[1] = point[1];
-	}
-
-
-
-    var style = this.element.style;
-    if((!this.options.constraint) || (this.options.constraint=='horizontal'))
-      style.left = p[0] + "px";
-    if((!this.options.constraint) || (this.options.constraint=='vertical'))
-      style.top  = p[1] + "px";
-    
-    if(style.visibility=="hidden") style.visibility = ""; // fix gecko rendering
+  // if(this.options.snap) {
+  //   if(Object.isFunction(this.options.snap)) {
+  //     p = this.options.snap(p[0],p[1],this);
+  //   } else {
+  //   if(Object.isArray(this.options.snap)) {
+  //     p = p.map( function(v, i) {
+  //       return (v/this.options.snap[i]).round()*this.options.snap[i] }.bind(this))
+  //   } else {
+  //     p = p.map( function(v) {
+  //       return (v/this.options.snap).round()*this.options.snap }.bind(this))
+  //   }
+  // }}
+  // 
+  if (this.options.superghosting) {
+    p[1] = point[1] - (this.element.getHeight() / 2);
+  }
+  
+  var style = this.element.style;
+  if((!this.options.constraint) || (this.options.constraint=='horizontal'))
+    style.left = p[0] + "px";
+  if((!this.options.constraint) || (this.options.constraint=='vertical'))
+    style.top  = p[1] + "px";
+  
+  if(style.visibility=="hidden") style.visibility = ""; // fix gecko rendering
 }
 
 Droppables.isAffected = function(point, element, drop) {
-	Position.prepare();
-	positioned_within = Position.withinIncludingScrolloffsets(drop.element, point[0], point[1])
-	return (
+  Position.prepare();
+  positioned_within = Position.withinIncludingScrolloffsets(drop.element, point[0], point[1])
+  return (
       (drop.element!=element) &&
       ((!drop._containers) ||
         this.isContained(element, drop)) &&
@@ -164,17 +162,17 @@ Draggable.prototype.finishDrag =  function(event, success) {
       this._clone = null;
   }
 
-	
-	
+  
+  
   if(this.options.superghosting) {
-	  body = document.getElementsByTagName("body")[0];
+    body = document.getElementsByTagName("body")[0];
       Element.remove(this.element);
 /*
-	  me = this.element;
-	  body.removeChild(me);
+    me = this.element;
+    body.removeChild(me);
 */
-	  new Draggable(this._clone, this.options);
-	}
+    new Draggable(this._clone, this.options);
+  }
 
   var dropped = false; 
   if(success) { 

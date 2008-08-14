@@ -68,12 +68,11 @@
   background-color: #D0FA30;
 }
 
-.scrolling_table div.hovering {
-/*  background-color: #E9F79B;*/
-  border: 2px solid #D0FA30;
+.scrolling_table tr.hovering {
+  background-color: #E9F79B;
 }
 
-.scrolling_table tr.disabled {
+.scrolling_table tr.disabled div.record {
   background-image: url(/images/icons/spinner.gif);
 }
 
@@ -98,21 +97,34 @@ div.records {
   margin: 0 auto;
 }
 
-td.record {
+.scrolling_table td.record {
   width: 288px;
+  padding-left: 8px;
+}
+
+div.record {
   background-image: url(/images/icons/people.gif);
   background-repeat: no-repeat;
-  background-position: 8px 4px;
-  cursor: move;  
+  background-position: 0px 1px;
+  cursor: move;
+  font-size: 11px;
+}
+
+tr.disabled div.record {
+  cursor: default;
+}
+
+div.record a {
+  border-bottom-style: none;
+}
+
+div.record div {
+  padding-left: 24px;
 }
 
 .scrolling_table .headers th.record {
   padding-left: 36px;
   width: 256px;
-}
-
-td.record div {
-  padding-left: 32px;
 }
 
 td.editable a {
@@ -126,6 +138,10 @@ td.editable a:hover {
   color: black;
   text-decoration: none;
   border-bottom-style: none;
+}
+
+tr.disabled td.editable a:hover, tr.hovering td.editable a:hover {
+  background: inherit;
 }
 
 td div.name a {

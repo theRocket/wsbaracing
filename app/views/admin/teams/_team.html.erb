@@ -1,5 +1,5 @@
 <tr class="row <%= cycle("even", "odd") %>" id="team_<%= team.id %>_row">
-  <td class="record editable" id="team_<%= team.id %>"><%= render(:partial => "name", :locals => { :team => team }) %></td>
+  <td class="record editable"><div class="record" id="team_<%= team.id %>"><%= render(:partial => "name", :locals => { :team => team }) %></div></td>
   <td class="aliases" id="team_<%= team.id %>_aliases"><%= render(:partial => "aliases", :locals => { :team => team }) %></td>
   <td class="member"><%= render :partial => 'member', :locals => { :team => team } %></td>
 </tr>

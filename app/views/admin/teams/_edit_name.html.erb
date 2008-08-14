@@ -5,7 +5,8 @@
           :id => "team_#{@team.id}_name_text_field" %><%= 
         link_to_remote image_tag('/images/buttons/small_cancel.gif', :class => "cancel", :title => "Cancel editing"), 
           { :update => "team_#{@team.id}", 
-            :url => { :action => "cancel_edit_name", :id => @team.to_param} },
+            :url => { :action => "cancel_edit_name", :id => @team.to_param},
+            :success => "add_droppable_row_for(#{@team.id}); add_draggable_for(#{@team.id})" },
           { :class => "cancel" } %>
   </div>
 <% end -%>

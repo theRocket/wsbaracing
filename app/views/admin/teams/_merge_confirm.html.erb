@@ -1,16 +1,17 @@
-<%# TODO: Disable drag and re-enable on Cancel or OK %>
+<%# TODO: Move style into stylesheet %>
 <%# TODO: Disable and show progress on OK %>
 <%# TODO: Add helpful context to multiple existing team choices %>
+<%# TODO: Fix click event on buttons %>
 
 <% if @existing_teams.size == 1 %>
 <% form_remote_tag(:url => "/admin/teams/merge") do -%>
   <div><%= text_field_tag 'name', @team.name, :size => 30, :disabled => true %></div>
   <%= hidden_field_tag "id", @team.id %>
   <%= hidden_field_tag "target_id", @existing_teams.first.id %>
-  <div style=" background-image: url(/images/icons/warn.gif); background-position: 0px 6px; background-repeat: no-repeat; width: 276px; white-space: normal; margin-left: 6px; padding-left: 24px;">
+  <div style=" background-image: url(/images/icons/warn.gif); background-position: 2px 4px; background-repeat: no-repeat; width: 276px; white-space: normal;">
     <%= @existing_teams.first.name %> <%= aka(@existing_teams.first) %> already exists.
   </div>
-  <div style="width: 276px; white-space: normal; margin-left: 6px; padding-left: 24px;">
+  <div style="width: 276px; white-space: normal; padding-left: 24px;">
     Delete <%= @original_name %> and move results to <%= @existing_teams.first.name %>?
   </div>
   <div style="width: 300px; margin-left: auto; text-align: right;">
