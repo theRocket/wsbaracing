@@ -1,6 +1,5 @@
 // TODO Droppables still accept drop, even when scrolled out of view? (all)
 // TODO Check for values that could be cached
-// TODO Don't allow "out of bounds" drops
 
 lastClickAt = 0;
 selectedId = null;
@@ -23,18 +22,31 @@ function add_droppable_row_for(record_type, record_id) {
   Droppables.add(record_type + '_' + record_id + '_row', 
                  { hoverclass:'hovering', 
                    onDrop:function(element) {
-                     disableDragAndDrop(record_type, record_id);
-                     showDragAndDropDisabled(record_type, record_id);
-                     var dropped_id = idRegex.exec(element.id);
-                     showDragAndDropDisabled(record_type, dropped_id);
-                     disableDragAndDrop(record_type, dropped_id);
-                     new Ajax.Request('/admin/' + record_type + 's/merge?target_id=' + record_id, 
-                                      { asynchronous:true, 
-                                        evalScripts:true, 
-                                        parameters:'id=' + encodeURIComponent(dropped_id)
-                                       }
-                                      );
-                     }})  
+                     if (droppableIsVisible(record_type + '_' + record_id + '_row')) {
+                       disableDragAndDrop(record_type, record_id);
+                       showDragAndDropDisabled(record_type, record_id);
+                       var dropped_id = idRegex.exec(element.id);
+                       showDragAndDropDisabled(record_type, dropped_id);
+                       disableDragAndDrop(record_type, dropped_id);
+                       new Ajax.Request('/admin/' + record_type + 's/merge?target_id=' + record_id, 
+                                        { asynchronous:true, 
+                                          evalScripts:true, 
+                                          parameters:'id=' + encodeURIComponent(dropped_id)
+                                         }
+                                        );
+                      }
+                      else {
+                        return false;
+                      }
+               }})  
+}
+
+function droppableIsVisible(droppable_id) {
+  var droppable = $(droppable_id);
+  var droppable_y = droppable.cumulativeOffset()[1] - droppable.cumulativeScrollOffset()[1];
+  var records_top = $('records').cumulativeOffset()[1];
+  var records_bottom = records_top + $('records').getHeight();
+  return (droppable_y >= records_top) && (droppable_y <= records_bottom);
 }
 
 function disableDragAndDrop(record_type, record_id) {
