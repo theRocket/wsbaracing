@@ -615,3 +615,44 @@ table.base tr.error td img.icon {
    apply to column that should drop below previous ones. */
 
 .clear { clear:both; }
+
+
+/* Scrolling table defaults */
+.scrolling_table .headers th.name {
+  padding-left: 32px;
+  width: 264px;
+}
+
+.scrolling_table td.name {
+  width: 288px;
+  padding-left: 8px;
+}
+
+.team_name, .scrolling_table .headers th.team_name {
+  width: 200px;
+}
+
+ table.racers .aliases {
+  width: 200px;
+}
+
+ table.teams .aliases {
+  width: 400px;
+}
+
+.member, .scrolling_table .headers th.member {
+  width: 48px;
+  text-align: center;
+}
+
+.member input {
+  margin-right: 0px;
+}
+
+table.racers div.record {
+  background-image: url(/images/icons/person.gif);
+}
+
+table.teams div.record {
+  background-image: url(/images/icons/people.gif);
+}

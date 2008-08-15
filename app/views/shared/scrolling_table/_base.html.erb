@@ -1,10 +1,10 @@
 <div class="scrolling_table">
   <!--This is a super hack job to get the table header to remain fixed, the columns to stay lined up, and the scrollbar to be covered up on the header-->
   <div class="headers">
-    <table cellspacing="0">
+    <table cellspacing="0" class="<%= scrolling_table.record_type.pluralize %>">
       <thead>
         <tr>
-          <% columns.each do |column| -%>
+          <% scrolling_table.columns.each do |column| -%>
           <th class="<%= column.style_class %>"><%= column.title %></th>
           <%- end %>
         </tr>
@@ -17,9 +17,9 @@
   <!--END hack job-->
 
   <div class="records" id="records">
-    <table cellspacing="0">
+    <table cellspacing="0" class="<%= scrolling_table.record_type.pluralize %>">
     <tbody>
-      <%= render :partial => record_type, :collection => records %>
+      <%= render :partial => scrolling_table.record_type, :collection => scrolling_table.records %>
     </tbody>
     </table>
   </div>
@@ -42,6 +42,6 @@
 
 <script type="text/javascript" charset="utf-8">
   document.observe("dom:loaded", function() {
-    add_javascript_for('<%= record_type %>', [<%= records.map { |record| record.id }.join(",") %>]);
+    add_javascript_for('<%= scrolling_table.record_type %>', [<%= scrolling_table.records.map { |record| record.id }.join(",") %>]);
   });
 </script>

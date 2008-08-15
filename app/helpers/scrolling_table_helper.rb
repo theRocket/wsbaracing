@@ -1,8 +1,8 @@
 module ScrollingTableHelper
   def scrolling_table(&block)
-    record_type = controller.controller_name
-    table = ScrollingTable.new
+    table = ScrollingTable.new(controller.controller_name)
+    table.records = assigns[controller.controller_name]
     yield(table)
-    render :partial => "shared/scrolling_table/base", :locals => { :record_type => record_type.singularize, :records => assigns[record_type], :columns => table.columns }
+    render :partial => "shared/scrolling_table/base", :locals => { :scrolling_table => table }
   end
 end

@@ -1,9 +1,14 @@
 class ScrollingTable
-  def column(title)
-    columns << ScrollingTableColumn.new(title)
+  attr_reader :columns, :record_type
+  attr_accessor :records
+  
+  def initialize(record_type)
+    @record_type = record_type.singularize
+    @records = []
+    @columns = []
   end
   
-  def columns
-    @columns ||= []
+  def column(title, *options)
+    columns << ScrollingTableColumn.new(title, options.extract_options!)
   end
 end

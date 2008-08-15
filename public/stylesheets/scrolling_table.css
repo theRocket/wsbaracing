@@ -97,13 +97,7 @@ div.records {
   margin: 0 auto;
 }
 
-.scrolling_table td.record {
-  width: 288px;
-  padding-left: 8px;
-}
-
 div.record {
-  background-image: url(/images/icons/people.gif);
   background-repeat: no-repeat;
   background-position: 0px 1px;
   cursor: move;
@@ -122,16 +116,12 @@ div.record div {
   padding-left: 24px;
 }
 
-.scrolling_table .headers th.record {
-  padding-left: 36px;
-  width: 256px;
-}
-
 td.editable a {
   color: black;
   text-decoration: none;
   border-style: none;
   border-width: 0px;
+  cursor: default;
 }
 
 td.editable a:hover {
@@ -144,10 +134,6 @@ tr.disabled td.editable a:hover, tr.hovering td.editable a:hover {
   background: inherit;
 }
 
-td div.name a {
-  cursor: default;
-}
-
 td.editable input {
   font-size: 11px;
   padding-top: 0px;
@@ -155,19 +141,6 @@ td.editable input {
   position: relative;
   top: -3px;
   left: -5px;
-}
-
-.aliases {
-  width: 400px;
-}
-
-.member, .scrolling_table .headers th.member {
-  width: 48px;
-  text-align: center;
-}
-
-.member input {
-  margin-right: 0px;
 }
 
 /* Buttons */

@@ -1,5 +1,5 @@
 <tr class="<%= cycle("even", "odd") %>" id="racer_<%= racer.id %>_row">
-  <td class="record editable"><div class="record" id="racer_<%= racer.id %>"><%= render(:partial => "name", :locals => { :racer => racer }) %></div></td>
+  <td class="name editable"><div class="record" id="racer_<%= racer.id %>"><%= render(:partial => "name", :locals => { :racer => racer }) %></div></td>
   <td class="team_name" id="racer<%= racer.id %>_team_name"><%= render(:partial => "team_name", :locals => { :racer => racer }) %></td>
   <td class="aliases" id="racer<%= racer.id %>_aliases"><%= render(:partial => "aliases", :locals => { :racer => racer }) %></td>
   <td class="right">
