@@ -135,14 +135,17 @@ function captureClick(record_type, record_id) {
   if (row.captureEvents) row.captureEvents(Event.CLICK);
 }
 
+/* Cache values to make slow operation as fast as possible */
 function resize() {
-  if (document.viewport.getHeight() < 100) {
-    $("records").setStyle({ height: 'auto' });
+  var document_viewport_height = document.viewport.getHeight();
+  var records = $('records');
+  if (document_viewport_height < 100) {
+    records.setStyle({ height: 'auto' });
   }
   else {
-    var newHeight = document.viewport.getHeight() - 270;
+    var newHeight = records.getHeight() + (document_viewport_height - $('frame').getHeight()) - 20;
     if (newHeight < 50) newHeight = 50;
-    $("records").setStyle({ height: newHeight + 'px' });
+    records.setStyle({ height: newHeight + 'px' });
   }
 }
 

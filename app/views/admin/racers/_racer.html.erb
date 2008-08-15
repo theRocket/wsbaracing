@@ -2,16 +2,16 @@
   <td class="name editable"><div class="record" id="racer_<%= racer.id %>"><%= render(:partial => "name", :locals => { :racer => racer }) %></div></td>
   <td class="team_name" id="racer<%= racer.id %>_team_name"><%= render(:partial => "team_name", :locals => { :racer => racer }) %></td>
   <td class="aliases" id="racer<%= racer.id %>_aliases"><%= render(:partial => "aliases", :locals => { :racer => racer }) %></td>
-  <td class="right">
+  <td class="race_number">
     <%= racer.road_number %>
   </td>
-  <td class="right">
+  <td class="race_number">
     <%= racer.xc_number %>
   </td>
-  <td class="right">
+  <td class="race_number">
     <%= racer.dh_number %>
   </td>
-  <td class="right">
+  <td class="race_number">
     <%= racer.ccx_number %>
   </td>
   <td class="member"><%= render :partial => 'member', :locals => { :racer => racer } %></td>
