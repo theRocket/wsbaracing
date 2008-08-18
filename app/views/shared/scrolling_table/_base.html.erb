@@ -25,15 +25,16 @@
   </div>
 </div>
 
-<div class="buttons last">
+<div class="buttons">
   <div style="float: left;">
     <button type="button"
             name="new" id="new_button" value="+" class="new disabled">&nbsp;</button><button 
                type="button" name="delete" id="delete_button" value="&ndash;" class="delete disabled">&nbsp;</button>
   </div>
   <div style="float: right;">
-    <button type="button" name="results" id="results_button" class="disabled" value="Results">Results</button><button 
-      type="button" name="edit" id="edit_button" class="disabled" value="Edit">Edit</button>
+    <% scrolling_table.buttons.each do |button| -%>
+      <%= content_tag("button", button.text, { :type => 'button', :name => button.name, :id => button.style_id, :value => button.value, :class => "disabled" }) %>
+    <%- end %>
   </div>
 </div>
 
@@ -43,9 +44,9 @@
                       '<%= scrolling_table.record_type %>', 
                       [<%= scrolling_table.records.map { |record| record.id }.join(",") %>]);
     scrollingTable = $('<%= scrolling_table.plural_record_type %>');
-    Event.observe($('new_button'), 'click', scrollingTable.redirectToNew.bindAsEventListener(scrollingTable));
-    Event.observe($('delete_button'), 'click', scrollingTable.deleteRecord.bindAsEventListener(scrollingTable));
-    Event.observe($('results_button'), 'click', scrollingTable.redirectToResults.bindAsEventListener(scrollingTable));
-    Event.observe($('edit_button'), 'click', scrollingTable.redirectToEdit.bindAsEventListener(scrollingTable));
+    Event.observe($('new_button'), 'mousedown', scrollingTable.redirectToNew.bindAsEventListener(scrollingTable));
+    Event.observe($('delete_button'), 'mousedown', scrollingTable.deleteRecord.bindAsEventListener(scrollingTable));
+    Event.observe($('results_button'), 'mousedown', scrollingTable.redirectToResults.bindAsEventListener(scrollingTable));
+    Event.observe($('edit_button'), 'mousedown', scrollingTable.redirectToEdit.bindAsEventListener(scrollingTable));
   });
 </script>
