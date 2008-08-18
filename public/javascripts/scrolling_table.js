@@ -111,8 +111,7 @@ function newScrollingTable(pluralRecordType, recordType, recordIds) {
   }
 
   /* Cache values to make slow operation as fast as possible */
-  scrollingTable.resize = function(e) {
-    console.log("resize on " + e);
+  scrollingTable.resize = function() {
     var document_viewport_height = document.viewport.getHeight();
     var records = $('records');
     if (document_viewport_height < 100) {
@@ -142,35 +141,31 @@ function newScrollingTable(pluralRecordType, recordType, recordIds) {
   }
 
   scrollingTable.enableButton = function(id) {
-    if ($(id).hasClassName("disabled")) {
-      $(id).removeClassName("disabled");
-    }
+    $(id).removeClassName("disabled");
   }
 
   scrollingTable.disableButton = function(id) {
-    if (!$(id).hasClassName("disabled")) {
-      $(id).addClassName("disabled");
-    }
+    $(id).addClassName("disabled");
   }
 
   scrollingTable.captureClick = function(recordId) {
     row = $(this.recordType + '_' + recordId + '_row');
     row.onclick = this.click;
-    if (row.captureEvents) row.captureEvents(Event.CLICK);
+    if (row.captureEvents) row.captureEvents(Event.MOUSE_DOWN);
   }
   
   scrollingTable.deleteRecord = function() {
-    if (selectedId != null) {
-      var name = $(recordType + '_' + selectedId).textContent.strip();
+    if (this.selectedId != null) {
+      var name = $(this.recordType + '_' + this.selectedId).textContent.strip();
       if (confirm('Really delete ' + name + '?')) { 
-        new Ajax.Request('/admin/' + this.pluralRecordType + 's/' + selectedId, {asynchronous:true, evalScripts:true, method:'delete'}); 
+        new Ajax.Request('/admin/' + this.pluralRecordType + '/' + this.selectedId, {asynchronous:true, evalScripts:true, method:'delete'}); 
       } 
     }
     return false;
   }
 
   scrollingTable.redirectToNew = function() {
-    window.location = "/admin/' + this.pluralRecordType + '/new";
+    window.location = '/admin/' + this.pluralRecordType + '/new';
     return false;
   }
 
@@ -208,13 +203,11 @@ function newScrollingTable(pluralRecordType, recordType, recordIds) {
     });
   }
   
-  Event.observe(window, 'load', function() {
-    for (var i=0; i < recordIds.length; i++) {
-      scrollingTable.captureClick(recordIds[i]);  
-      scrollingTable.addDroppableRowFor(recordIds[i]);
-      scrollingTable.addDraggableFor(recordIds[i]);
-    };
-    scrollingTable.resize();
-    Event.observe(window, 'resize', scrollingTable.resize);
-  });  
+  for (var i=0; i < recordIds.length; i++) {
+    scrollingTable.captureClick(recordIds[i]);  
+    scrollingTable.addDroppableRowFor(recordIds[i]);
+    scrollingTable.addDraggableFor(recordIds[i]);
+  };
+  scrollingTable.resize();
+  Event.observe(window, 'resize', scrollingTable.resize);
 }

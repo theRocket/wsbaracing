@@ -29,14 +29,11 @@
   <div style="float: left;">
     <button type="button"
             name="new" id="new_button" value="+" class="new disabled">&nbsp;</button><button 
-               type="button" name="delete" id="delete_button" value="&ndash;" class="delete disabled" 
-               onclick="deleteRacer('<%= scrolling_table.plural_record_type %>')">&nbsp;</button>
+               type="button" name="delete" id="delete_button" value="&ndash;" class="delete disabled">&nbsp;</button>
   </div>
   <div style="float: right;">
-    <button type="button" name="results" id="results_button" class="disabled" value="Results" 
-            onClick="redirectToResults('<%= scrolling_table.plural_record_type %>')">Results</button><button 
-      type="button" name="edit" id="edit_button" class="disabled" value="Edit"
-      onClick="redirectToEdit('<%= scrolling_table.plural_record_type %>')">Edit</button>
+    <button type="button" name="results" id="results_button" class="disabled" value="Results">Results</button><button 
+      type="button" name="edit" id="edit_button" class="disabled" value="Edit">Edit</button>
   </div>
 </div>
 
@@ -45,5 +42,10 @@
     newScrollingTable('<%= scrolling_table.plural_record_type %>', 
                       '<%= scrolling_table.record_type %>', 
                       [<%= scrolling_table.records.map { |record| record.id }.join(",") %>]);
+    scrollingTable = $('<%= scrolling_table.plural_record_type %>');
+    Event.observe($('new_button'), 'click', scrollingTable.redirectToNew.bindAsEventListener(scrollingTable));
+    Event.observe($('delete_button'), 'click', scrollingTable.deleteRecord.bindAsEventListener(scrollingTable));
+    Event.observe($('results_button'), 'click', scrollingTable.redirectToResults.bindAsEventListener(scrollingTable));
+    Event.observe($('edit_button'), 'click', scrollingTable.redirectToEdit.bindAsEventListener(scrollingTable));
   });
 </script>

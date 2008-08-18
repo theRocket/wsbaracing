@@ -510,13 +510,13 @@ class Admin::RacersControllerTest < ActiveSupport::TestCase
     assert_not_nil(assigns["race_numbers"], "Should assign racer's number for current year as 'race_numbers'")
   end
 
-  def test_show
+  def test_edit
     @request.session[:user] = users(:candi)
     alice = racers(:alice)
     opts = {:controller => "admin/racers", :action => "show", :id => alice.to_param.to_s}
     assert_routing("/admin/racers/#{alice.to_param}", opts)
     
-    get(:show, :id => alice.to_param)
+    get(:edit, :id => alice.to_param)
     assert_response(:success)
     assert_template("admin/racers/show")
     assert_not_nil(assigns["racer"], "Should assign racer")

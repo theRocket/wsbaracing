@@ -126,7 +126,7 @@ class Admin::RacersController < Admin::RecordEditor
     render(:template => '/admin/racers/show')
   end
   
-  def show
+  def edit
     @racer = Racer.find(params[:id])
     @year = Date.today.year
     @race_numbers = RaceNumber.find(:all, :conditions => ['racer_id=? and year=?', @racer.id, @year], :order => 'number_issuer_id, discipline_id')
