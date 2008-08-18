@@ -80,7 +80,7 @@ function newScrollingTable(pluralRecordType, recordType, recordIds) {
     $(this.recordType + '_' + recordId + '_row').addClassName("disabled");
   }
 
-  scrollingTable.clicked = function(e) {
+  scrollingTable.click = function(e) {
     if (!e) var e = window.event
 
     if (e.target) targ = e.target;
@@ -93,30 +93,46 @@ function newScrollingTable(pluralRecordType, recordType, recordIds) {
       return true;
     }
 
+    var scrollingTable = targ.up('table');
     // TODO Check last click position, too
-    if ((new Date().getTime() - lastClickAt) <= 250) {
+    if ((new Date().getTime() - this.lastClickAt) <= 250) {
       e.cancelBubble = true;
       if (e.stopPropagation) e.stopPropagation();
-      select(targ.up('tr'));
-      redirectToEdit($(selectedId).pluralRecordType);
+      scrollingTable.selectRow(targ.up('tr'));
+      scrollingTable.redirectToEdit();
       return false;
     }
 
-    lastClickAt = new Date().getTime();
+    this.lastClickAt = new Date().getTime();
     e.cancelBubble = true;
     if (e.stopPropagation) e.stopPropagation();
-    select(targ.up('tr'));
+    scrollingTable.selectRow(targ.up('tr'));
     return false;
   }
 
-  scrollingTable.select = function(row) {
+  /* Cache values to make slow operation as fast as possible */
+  scrollingTable.resize = function(e) {
+    console.log("resize on " + e);
+    var document_viewport_height = document.viewport.getHeight();
+    var records = $('records');
+    if (document_viewport_height < 100) {
+      records.setStyle({ height: 'auto' });
+    }
+    else {
+      var newHeight = records.getHeight() + (document_viewport_height - $('frame').getHeight()) - 20;
+      if (newHeight < 50) newHeight = 50;
+      records.setStyle({ height: newHeight + 'px' });
+    }
+  }
+
+  scrollingTable.selectRow = function(row) {
     if (!row.hasClassName("selected")) {
-      clearSelection();
-      selectedId = idRegex.exec(row.id);
+      this.clearSelection();
+      this.selectedId = this.idRegex.exec(row.id);
       row.addClassName("selected");
-      enableButton("delete_button");
-      enableButton("results_button");
-      enableButton("edit_button");
+      this.enableButton("delete_button");
+      this.enableButton("results_button");
+      this.enableButton("edit_button");
     }
   }
 
@@ -139,10 +155,10 @@ function newScrollingTable(pluralRecordType, recordType, recordIds) {
 
   scrollingTable.captureClick = function(recordId) {
     row = $(this.recordType + '_' + recordId + '_row');
-    row.onclick = this.clicked;
+    row.onclick = this.click;
     if (row.captureEvents) row.captureEvents(Event.CLICK);
-  }  
-
+  }
+  
   scrollingTable.deleteRecord = function() {
     if (selectedId != null) {
       var name = $(recordType + '_' + selectedId).textContent.strip();
@@ -159,13 +175,13 @@ function newScrollingTable(pluralRecordType, recordType, recordIds) {
   }
 
   scrollingTable.redirectToResults = function() {
-    if (selectedId != null) window.location = "/results/" + this.recordType + "/" + selectedId;
+    if (this.selectedId != null) window.location = "/results/" + this.recordType + "/" + this.selectedId;
     return false;
   }
 
   scrollingTable.redirectToEdit = function() {
-    if (selectedId != null) {
-      window.location = "/admin/" + $(selectedId).pluralRecordType + "/" + selectedId + "/edit";    
+    if (this.selectedId != null) {
+      window.location = "/admin/" + this.pluralRecordType + "/" + this.selectedId + "/edit";    
     }
     return false;  
   }
@@ -192,23 +208,13 @@ function newScrollingTable(pluralRecordType, recordType, recordIds) {
     });
   }
   
-  for (var i=0; i < recordIds.length; i++) {
-    scrollingTable.captureClick(recordIds[i]);  
-    scrollingTable.addDroppableRowFor(recordIds[i]);
-    scrollingTable.addDraggableFor(recordIds[i]);
-  };
-}
-
-/* Cache values to make slow operation as fast as possible */
-function resize() {
-  var document_viewport_height = document.viewport.getHeight();
-  var records = $('records');
-  if (document_viewport_height < 100) {
-    records.setStyle({ height: 'auto' });
-  }
-  else {
-    var newHeight = records.getHeight() + (document_viewport_height - $('frame').getHeight()) - 20;
-    if (newHeight < 50) newHeight = 50;
-    records.setStyle({ height: newHeight + 'px' });
-  }
+  Event.observe(window, 'load', function() {
+    for (var i=0; i < recordIds.length; i++) {
+      scrollingTable.captureClick(recordIds[i]);  
+      scrollingTable.addDroppableRowFor(recordIds[i]);
+      scrollingTable.addDraggableFor(recordIds[i]);
+    };
+    scrollingTable.resize();
+    Event.observe(window, 'resize', scrollingTable.resize);
+  });  
 }
