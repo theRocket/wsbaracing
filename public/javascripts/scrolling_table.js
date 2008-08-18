@@ -1,150 +1,202 @@
 // TODO Droppables still accept drop, even when scrolled out of view? (all)
 // TODO Check for values that could be cached
-
-lastClickAt = 0;
-selectedId = null;
-idRegex = /\d+/;
-// TODO replace global variable with better event handling. Current code breaks selection.
-dragging = false;
-
-function add_javascript_for(record_type, record_ids) {
-  for (var i=0; i < record_ids.length; i++) {
-    captureClick(record_type, record_ids[i]);  
-    add_droppable_row_for(record_type, record_ids[i]);
-    add_draggable_for(record_type, record_ids[i]);
-  };
-}
-
+// TODO Handle clicks better. Replace global variable with better event handling. Current code breaks selection.
 // TODO Disabled Draggable and update UI as well as Droppable?
 // TODO Ensure Drag and drops are recreated afterwards
 // TODO Ensure everything (dragging, editing) is really disabled after drop
-function add_droppable_row_for(record_type, record_id) {
-  Droppables.add(record_type + '_' + record_id + '_row', 
-                 { hoverclass:'hovering', 
-                   onDrop:function(element) {
-                     if (droppableIsVisible(record_type + '_' + record_id + '_row')) {
-                       disableDragAndDrop(record_type, record_id);
-                       showDragAndDropDisabled(record_type, record_id);
-                       var dropped_id = idRegex.exec(element.id);
-                       showDragAndDropDisabled(record_type, dropped_id);
-                       disableDragAndDrop(record_type, dropped_id);
-                       new Ajax.Request('/admin/' + record_type + 's/merge?target_id=' + record_id, 
-                                        { asynchronous:true, 
-                                          evalScripts:true, 
-                                          parameters:'id=' + encodeURIComponent(dropped_id)
-                                         }
-                                        );
-                      }
-                      else {
-                        return false;
-                      }
-               }})  
-}
 
-function droppableIsVisible(droppable_id) {
-  var droppable = $(droppable_id);
-  var droppable_y = droppable.cumulativeOffset()[1] - droppable.cumulativeScrollOffset()[1];
-  var records_top = $('records').cumulativeOffset()[1];
-  var records_bottom = records_top + $('records').getHeight();
-  return (droppable_y >= records_top) && (droppable_y <= records_bottom);
-}
-
-function disableDragAndDrop(record_type, record_id) {
-  Droppables.remove(record_type + '_' + record_id + '_row');
-  var originalDraggable = Draggables.drags.find(function(d) { return d.element.id == (record_type + '_' + record_id) } );
-  originalDraggable.destroy();
-}
-
-// After drop, we want to make a big deal that something is happening.
-// When editing, we want to be more subtle.
-function showDragAndDropDisabled(record_type, record_id) {
-  new Effect.Opacity(record_type + '_' + record_id + '_row', { from: 1.0, to: 0.5, duration: 0.5 });
-  $(record_type + '_' + record_id + '_row').addClassName("disabled");
-}
-
-function add_draggable_for(record_type, record_id) {
-  new Draggable(record_type + '_' + record_id, { delay:100,
-                                       scroll: $('records'),
-                                       superghosting: true,
-                                       revert: 'failure',
-                                       onStart:function() { Droppables.remove(record_type + '_' + record_id + '_row'); dragging = true;},
-                                       reverteffect: function(element, top_offset, left_offset) {
-                                         add_droppable_row_for(record_type, record_id);
-                                         var dur = Math.sqrt(Math.abs(top_offset^2)+Math.abs(left_offset^2))*0.02;
-                                         new Effect.Move(element, { x: -left_offset, y: -top_offset, duration: dur,
-                                           queue: {scope:'_draggable', position:'end'}
-                                         });
-                                       }
-                                     }
-                );
-}
-
-function clicked(e) {
-  if (!e) var e = window.event
+function newScrollingTable(pluralRecordType, recordType, recordIds) {
+  var scrollingTable = $(pluralRecordType);
+  scrollingTable.pluralRecordType  = pluralRecordType;
+  scrollingTable.recordType = recordType;
+  scrollingTable.recordIds = recordIds;
+  scrollingTable.lastClickAt = 0;
+  scrollingTable.selectedId = null;
+  scrollingTable.idRegex = /\d+/;
   
-  if (e.target) targ = e.target;
-  else if (e.srcElement) targ = e.srcElement;
-  // defeat Safari bug
-  if (targ.nodeType == 3) targ = targ.parentNode;
-
-  // TODO Refactor
-  if (targ.localName == "a" || targ.localName == "A" || targ.localName == "input" || targ.localName == "INPUT" || targ.localName == "img" || targ.localName == "IMG") {
-    return true;
+  scrollingTable.addDraggableFor = function(recordId) {
+    var draggable = new Draggable(this.recordType + '_' + recordId, 
+                              { delay:100,
+                                scroll: $('records'),
+                                superghosting: true,
+                                revert: 'failure',
+                                onStart: function() { Droppables.remove(this.recordType + '_' + this.recordId + '_row') },
+                                reverteffect: function(element, top_offset, left_offset) {
+                                  scrollingTable.addDroppableRowFor(recordId);
+                                  var dur = Math.sqrt(Math.abs(top_offset^2)+Math.abs(left_offset^2))*0.02;
+                                  new Effect.Move(element, { x: -left_offset, y: -top_offset, duration: dur,
+                                    queue: {scope:'_draggable', position:'end'}
+                                  });
+                                }
+                              }
+                            );
+    draggable.scrollingTable = scrollingTable;
+  }
+  
+  scrollingTable.addDroppableRowFor = function(recordId) {
+    var droppable = Droppables.add(this.recordType + '_' + recordId + '_row', 
+                   { hoverclass:'hovering', 
+                     onDrop:function(element) {
+                       if (this.scrollingTable.isDroppableVisible(this.scrollingTable.recordType + '_' + recordId + '_row')) {
+                         this.scrollingTable.disableDragAndDrop(recordId);
+                         this.scrollingTable.showDragAndDropDisabled(recordId);
+                         var droppedId = this.scrollingTable.idRegex.exec(element.id);
+                         this.scrollingTable.showDragAndDropDisabled(droppedId);
+                         this.scrollingTable.disableDragAndDrop(droppedId);
+                         new Ajax.Request('/admin/' + this.scrollingTable.pluralRecordType + '/merge?target_id=' + recordId, 
+                                          { asynchronous:true, 
+                                            evalScripts:true, 
+                                            parameters:'id=' + encodeURIComponent(droppedId)
+                                           }
+                                          );
+                        }
+                        else {
+                          return false;
+                        }
+                 }});
+    droppable.scrollingTable = this;
   }
 
-  // TODO Check last click position, too
-  if ((new Date().getTime() - lastClickAt) <= 250) {
+  scrollingTable.isDroppableVisible = function(droppableId) {
+    var droppable = $(droppableId);
+    var droppableY = droppable.cumulativeOffset()[1] - droppable.cumulativeScrollOffset()[1];
+    var recordsTop = $('records').cumulativeOffset()[1];
+    var recordsBottom = recordsTop + $('records').getHeight();
+    return (droppableY >= recordsTop) && (droppableY <= recordsBottom);
+  }
+
+  scrollingTable.disableDragAndDrop = function(recordId) {
+    Droppables.remove(this.recordType + '_' + recordId + '_row');
+    var originalDraggable = Draggables.drags.find(function(d) { 
+      return d.element.id == (this.recordType + '_' + recordId) 
+    }, this );
+    originalDraggable.destroy();
+  }
+
+  // After drop, we want to make a big deal that something is happening.
+  // When editing, we want to be more subtle.
+  scrollingTable.showDragAndDropDisabled = function(recordId) {
+    new Effect.Opacity(this.recordType + '_' + recordId + '_row', { from: 1.0, to: 0.5, duration: 0.5 });
+    $(this.recordType + '_' + recordId + '_row').addClassName("disabled");
+  }
+
+  scrollingTable.clicked = function(e) {
+    if (!e) var e = window.event
+
+    if (e.target) targ = e.target;
+    else if (e.srcElement) targ = e.srcElement;
+    // defeat Safari bug
+    if (targ.nodeType == 3) targ = targ.parentNode;
+
+    // TODO Refactor
+    if (targ.localName == "a" || targ.localName == "A" || targ.localName == "input" || targ.localName == "INPUT" || targ.localName == "img" || targ.localName == "IMG") {
+      return true;
+    }
+
+    // TODO Check last click position, too
+    if ((new Date().getTime() - lastClickAt) <= 250) {
+      e.cancelBubble = true;
+      if (e.stopPropagation) e.stopPropagation();
+      select(targ.up('tr'));
+      redirectToEdit($(selectedId).pluralRecordType);
+      return false;
+    }
+
+    lastClickAt = new Date().getTime();
     e.cancelBubble = true;
     if (e.stopPropagation) e.stopPropagation();
-
-    redirectToEdit(idRegex.exec(targ.parentNode.id));
+    select(targ.up('tr'));
     return false;
   }
+
+  scrollingTable.select = function(row) {
+    if (!row.hasClassName("selected")) {
+      clearSelection();
+      selectedId = idRegex.exec(row.id);
+      row.addClassName("selected");
+      enableButton("delete_button");
+      enableButton("results_button");
+      enableButton("edit_button");
+    }
+  }
+
+  scrollingTable.clearSelection = function() {
+    selectedId = null;
+    $$('div.records tbody > tr').each(function(row) { row.removeClassName("selected"); });
+  }
+
+  scrollingTable.enableButton = function(id) {
+    if ($(id).hasClassName("disabled")) {
+      $(id).removeClassName("disabled");
+    }
+  }
+
+  scrollingTable.disableButton = function(id) {
+    if (!$(id).hasClassName("disabled")) {
+      $(id).addClassName("disabled");
+    }
+  }
+
+  scrollingTable.captureClick = function(recordId) {
+    row = $(this.recordType + '_' + recordId + '_row');
+    row.onclick = this.clicked;
+    if (row.captureEvents) row.captureEvents(Event.CLICK);
+  }  
+
+  scrollingTable.deleteRecord = function() {
+    if (selectedId != null) {
+      var name = $(recordType + '_' + selectedId).textContent.strip();
+      if (confirm('Really delete ' + name + '?')) { 
+        new Ajax.Request('/admin/' + this.pluralRecordType + 's/' + selectedId, {asynchronous:true, evalScripts:true, method:'delete'}); 
+      } 
+    }
+    return false;
+  }
+
+  scrollingTable.redirectToNew = function() {
+    window.location = "/admin/' + this.pluralRecordType + '/new";
+    return false;
+  }
+
+  scrollingTable.redirectToResults = function() {
+    if (selectedId != null) window.location = "/results/" + this.recordType + "/" + selectedId;
+    return false;
+  }
+
+  scrollingTable.redirectToEdit = function() {
+    if (selectedId != null) {
+      window.location = "/admin/" + $(selectedId).pluralRecordType + "/" + selectedId + "/edit";    
+    }
+    return false;  
+  }
+
+  scrollingTable.cancelEditName = function(recordId) {
+    new Ajax.Updater(recordType + recordType + '_' + id, '/admin/' + recordType + 's/cancel_edit_name/' + id, {asynchronous:true, evalScripts:true});
+    return false;
+  }
+
+  scrollingTable.restripe = function() {
+    index = 0;
+    $('records').down('tbody').childElements().each(function(row) {
+      if (row.hasClassName('even') || row.hasClassName('odd')) {
+        row.removeClassName('odd');
+        row.removeClassName('even');
+        if (index % 2 == 0) {
+          row.addClassName('even');
+        }
+        else {
+          row.addClassName('odd');
+        }
+        index = index + 1;
+      }
+    });
+  }
   
-  lastClickAt = new Date().getTime();
-  e.cancelBubble = true;
-  if (e.stopPropagation) e.stopPropagation();
-  if (dragging) {
-    // dragging = false;
-  }
-  else {
-    select(targ.up('tr'));
-  }
-  return false;
-}
-
-function select(row) {
-  if (!row.hasClassName("selected")) {
-    clearSelection();
-    selectedId = idRegex.exec(row.id);
-    row.addClassName("selected");
-    enable_button("delete_button");
-    enable_button("results_button");
-    enable_button("edit_button");
-  }
-}
-
-function clearSelection() {
-  selectedId = null;
-  $$('div.records tbody > tr').each(function(row) { row.removeClassName("selected"); });
-}
-
-function enable_button(id) {
-  if ($(id).hasClassName("disabled")) {
-    $(id).removeClassName("disabled");
-  }
-}
-
-function disable_button(id) {
-  if (!$(id).hasClassName("disabled")) {
-    $(id).addClassName("disabled");
-  }
-}
-
-function captureClick(record_type, record_id) {
-  row = $(record_type + '_' + record_id + '_row');
-  row.onclick = clicked;
-  if (row.captureEvents) row.captureEvents(Event.CLICK);
+  for (var i=0; i < recordIds.length; i++) {
+    scrollingTable.captureClick(recordIds[i]);  
+    scrollingTable.addDroppableRowFor(recordIds[i]);
+    scrollingTable.addDraggableFor(recordIds[i]);
+  };
 }
 
 /* Cache values to make slow operation as fast as possible */
@@ -159,52 +211,4 @@ function resize() {
     if (newHeight < 50) newHeight = 50;
     records.setStyle({ height: newHeight + 'px' });
   }
-}
-
-function deleteRecord(record_type) {
-  if (selectedId != null) {
-    var name = $(record_type + '_' + selectedId).textContent.strip();
-    if (confirm('Really delete ' + name + '?')) { 
-      new Ajax.Request('/admin/' + record_type + 's/' + selectedId, {asynchronous:true, evalScripts:true, method:'delete'}); 
-    } 
-  }
-  return false;
-}
-
-function redirectToNew(record_type) {
-  window.location = "/admin/' + record_type + 's/new";
-  return false;
-}
-
-function redirectToResults(record_type) {
-  if (selectedId != null) window.location = "/results/" + record_type + "/" + selectedId;
-  return false;
-}
-
-function redirectToEdit(record_type, record_id) {
-  if (id == null) id = selectedId;
-  if (id != null) window.location = "/admin/" + record_type + "s/" + id + "/edit";
-  return false;  
-}
-
-function cancelEditName(record_type, record_id) {
-  new Ajax.Updater(record_type + record_type + '_' + id, '/admin/' + record_type + 's/cancel_edit_name/' + id, {asynchronous:true, evalScripts:true});
-  return false;
-}
-
-function restripeTable() {
-  index = 0;
-  $('records').down('tbody').childElements().each(function(row) {
-    if (row.hasClassName('even') || row.hasClassName('odd')) {
-      row.removeClassName('odd');
-      row.removeClassName('even');
-      if (index % 2 == 0) {
-        row.addClassName('even');
-      }
-      else {
-        row.addClassName('odd');
-      }
-      index = index + 1;
-    }
-  });
 }

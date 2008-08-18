@@ -5,6 +5,7 @@ class ScrollingTableTest < ActiveSupport::TestCase
     table = ScrollingTable.new("racers")
     assert_not_nil(table.columns, "columns")
     assert_equal("racer", table.record_type, "record_type")
+    assert_equal("racers", table.plural_record_type, "plural_record_type")
     assert_not_nil(table.records, "records")
   end
   

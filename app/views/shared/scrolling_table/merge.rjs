@@ -1,0 +1,10 @@
+page.remove "#{@record_type}_#{@record_to_merge.id}_row"
+page.replace_html "#{@record_type}_#{@existing_record.id}_aliases", render(:partial => 'aliases', :locals => { @record_type => @existing_record })
+page.hide 'warn'
+page.replace_html 'notice', "Merged #{@merged_record_name} into #{@existing_record.name}"
+page.show 'notice'
+page[@plural_record_type].add_draggable_for(@existing_record.id)
+page[@plural_record_type].add_droppable_row_for(@existing_record.id)
+page[@plural_record_type].restripe()
+page["#{@record_type}_#{@existing_record.id}_row"].removeClassName("disabled")
+page.visual_effect(:opacity, "#{@record_type}_#{@existing_record.id}_row", :from => 0.5, :to => 1.0)

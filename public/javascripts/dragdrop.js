@@ -42,6 +42,7 @@ var Droppables = {
     options.element = element;
 
     this.drops.push(options);
+    return options;
   },
   
   findDeepestChild: function(drops) {

@@ -1,7 +1,7 @@
 <div class="scrolling_table">
   <!--This is a super hack job to get the table header to remain fixed, the columns to stay lined up, and the scrollbar to be covered up on the header-->
   <div class="headers">
-    <table cellspacing="0" class="<%= scrolling_table.record_type.pluralize %>">
+    <table cellspacing="0" class="<%= scrolling_table.plural_record_type %>">
       <thead>
         <tr>
           <% scrolling_table.columns.each do |column| -%>
@@ -17,7 +17,7 @@
   <!--END hack job-->
 
   <div class="records" id="records">
-    <table cellspacing="0" class="<%= scrolling_table.record_type.pluralize %>">
+    <table cellspacing="0" class="<%= scrolling_table.plural_record_type %>" id="<%= scrolling_table.plural_record_type %>">
     <tbody>
       <%= render :partial => scrolling_table.record_type, :collection => scrolling_table.records %>
     </tbody>
@@ -30,18 +30,20 @@
     <button type="button"
             name="new" id="new_button" value="+" class="new disabled">&nbsp;</button><button 
                type="button" name="delete" id="delete_button" value="&ndash;" class="delete disabled" 
-               onclick="deleteRacer('team')">&nbsp;</button>
+               onclick="deleteRacer('<%= scrolling_table.plural_record_type %>')">&nbsp;</button>
   </div>
   <div style="float: right;">
     <button type="button" name="results" id="results_button" class="disabled" value="Results" 
-            onClick="redirectToResults()">Results</button><button 
+            onClick="redirectToResults('<%= scrolling_table.plural_record_type %>')">Results</button><button 
       type="button" name="edit" id="edit_button" class="disabled" value="Edit"
-      onClick="redirectToEdit('team')">Edit</button>
+      onClick="redirectToEdit('<%= scrolling_table.plural_record_type %>')">Edit</button>
   </div>
 </div>
 
 <script type="text/javascript" charset="utf-8">
   document.observe("dom:loaded", function() {
-    add_javascript_for('<%= scrolling_table.record_type %>', [<%= scrolling_table.records.map { |record| record.id }.join(",") %>]);
+    newScrollingTable('<%= scrolling_table.plural_record_type %>', 
+                      '<%= scrolling_table.record_type %>', 
+                      [<%= scrolling_table.records.map { |record| record.id }.join(",") %>]);
   });
 </script>

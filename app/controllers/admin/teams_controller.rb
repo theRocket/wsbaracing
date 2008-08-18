@@ -1,4 +1,5 @@
 class Admin::TeamsController < ApplicationController
+  include ScrollingTableHelper
   
   before_filter :login_required
   layout 'admin/application'
@@ -87,26 +88,6 @@ class Admin::TeamsController < ApplicationController
     end
   end
   
-  # Inline
-  # TODO Updated test for cancel
-  # TODO Better UI clean on exception
-  def merge
-    begin
-      team_to_merge_id = params[:id]
-      @team_to_merge = Team.find(team_to_merge_id)
-      @merged_team_name = @team_to_merge.name
-      @existing_team = Team.find(params[:target_id])
-      @existing_team.merge(@team_to_merge)
-      expire_cache
-    rescue Exception => e
-      render :update do |page|
-        page.visual_effect(:highlight, "team_#{@existing_team.id}_row", :startcolor => "#ff0000", :endcolor => "#FFDE14") if @existing_team
-        page.alert("Could not merge teams.\n#{e}")
-      end
-      ExceptionNotifier.deliver_exception_notification(e, self, request, {})
-    end
-  end
-
   def toggle_member
     team = Team.find(params[:id])
     team.toggle!(:member)

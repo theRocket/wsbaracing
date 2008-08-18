@@ -2,6 +2,7 @@
 class Admin::RacersController < Admin::RecordEditor
 
   include ApplicationHelper
+  include ScrollingTableHelper
   include ActionView::Helpers::TextHelper
 
   edits :racer
@@ -453,23 +454,6 @@ class Admin::RacersController < Admin::RecordEditor
     @original_name = original_name
     render :update do |page| 
       page.replace_html("racer_#{@racer.id}_name", :partial => 'merge_confirm', :locals => { :racer => @racer })
-    end
-  end
-  
-  def merge
-    begin
-      racer_to_merge_id = params[:id].gsub('racer_', '')
-      @racer_to_merge = Racer.find(racer_to_merge_id)
-      @merged_racer_name = @racer_to_merge.name
-      @existing_racer = Racer.find(params[:target_id])
-      @existing_racer.merge(@racer_to_merge)
-      expire_cache
-    rescue Exception => e
-      render :update do |page|
-        page.visual_effect(:highlight, "racer_#{@existing_racer.id}_row", :startcolor => "#ff0000", :endcolor => "#FFDE14") if @existing_racer
-        page.alert("Could not merge racers.\n#{e}")
-      end
-      ExceptionNotifier.deliver_exception_notification(e, self, request, {})
     end
   end
   

@@ -1,9 +1,10 @@
 class ScrollingTable
-  attr_reader :columns, :record_type
+  attr_reader :columns, :plural_record_type, :record_type
   attr_accessor :records
   
-  def initialize(record_type)
-    @record_type = record_type.singularize
+  def initialize(plural_record_type)
+    @plural_record_type = plural_record_type
+    @record_type = plural_record_type.singularize
     @records = []
     @columns = []
   end
