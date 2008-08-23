@@ -3,3 +3,11 @@ Racing on Rails is an existing Rails application built by Scott Wilson of Portla
 WSBARacing is a git-svn fork with the following objectives:
 	~ Provide an online registration system for events sanctioned by the cycling association.
 	~ Build an off-line race results engine (with SproutCore?) that synchronizes with the existing results schema.
+	
+A bunch of other places related to this project:
+<ul>
+	<li><a href="http://osc.lighthouseapp.com/projects/14875-wsba-racing/"> The integrated ticket system</a></li>
+	<li><a href="http://trac.butlerpress.com/racing_on_rails"> The existing Subversion code base and Trac system</a></li>
+	<li><a href="http://wsbaracing.com">The WSBA website</a></li>
+	<li><a href="http://groups.google.com/group/racing-on-rails">The Google group</a></li>
+</ul>
