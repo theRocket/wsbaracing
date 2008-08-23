@@ -6,12 +6,14 @@ Racing on Rails is an existing Rails application built by Scott Wilson of Portla
 
 Features include race calenders, results, and membership. Data is stored in a MySQL database.  Results can be imported via Excel.  Content can be managed via an admin backend.
 
-WSBARacing is a git-svn fork with the following objectives:
+WSBARacing is a git-svn fork with the several objectives:
 	~ Provide an online registration system for events sanctioned by the cycling association.
 	~ Build an off-line race results engine (with SproutCore?) that synchronizes with the existing results schema.
 	~ Get the dynamic calendering feature working similar to OBRA (driven by promoters or WSBA staff?)
-	~ Add a forum
-	
+	~ Add a forum (here's a candidate: http://code.google.com/p/savage-beast-2/)
+
+However these objectives will be moved to Lighthouse as Milestones (once I learn the API).
+
 A bunch of other places related to this project:
 	~ The integrated ticket system: http://osc.lighthouseapp.com/projects/14875-wsba-racing/
 	~ The existing Subversion code base and Trac system: http://trac.butlerpress.com/racing_on_rails
