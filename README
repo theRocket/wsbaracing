@@ -15,6 +15,7 @@ WSBARacing is a git-svn fork with the several objectives:
 However these objectives will be moved to Lighthouse as Milestones (once I learn the API).
 
 A bunch of other places related to this project:
+
 	~ The integrated ticket system: http://osc.lighthouseapp.com/projects/14875-wsba-racing/
 	~ The existing Subversion code base and Trac system: http://trac.butlerpress.com/racing_on_rails
 	~ The project's Google group: http://groups.google.com/group/racing-on-rails
